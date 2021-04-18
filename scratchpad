@@ -1,0 +1,52 @@
+/* 
+    This is just a scratch pad, no prod code should go in here!
+    
+    
+    JSON.stringify(Game.rooms.E97S28.lookAt(37,31)[0].terrain)
+    
+    JSON.stringify(Game.spawns['Chicago'])
+
+
+    {"Chicago":{"room":{"name":"E97S28","mode":"world","energyAvailable":260,"energyCapacityAvailable":300,"visual":{"roomName":"E97S28"}},"pos":{"x":38,"y":31,"roomName":"E97S28"},"id":"590759eb1d7393d4648c827b","name":"Chicago","energy":260,"energyCapacity":300,"spawning":null,"owner":{"username":"RedSys"},"my":true,"hits":5000,"hitsMax":5000,"structureType":"spawn"}}
+
+Game.spawns['Chicago'].pos.x
+    
+    Game.spawns['Spawn_Alpha'].createCreep([WORK, CARRY, MOVE],null, {primaryrole: 'harvester', secondaryrole: 'null', activerole: 'harvester', activetask: 'idle'})
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+*/
