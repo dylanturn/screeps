@@ -8,27 +8,16 @@
  */
 
 var room_name = "W7S56";
-
 var spawn_name = "Spawn1";
-
 var max_harvesters = 5;
-
 var max_builders = 5;
-
 var build_queue_limit = 5;
-
 var room_controller_id = "5bbcac619099fc012e6355e0";
-
 var energy_source_list = '{ "source_id_list": [] }';
-
 var miniral_source_list = '{ "source_list": [ {"type":"oxygen", "id":"58dbc92734e898064bcc333a"} ] }';
-
 var harvester_spec = '{ "variant":"default", "parts": [ "WORK", "CARRY", "MOVE" ], "primaryrole": "harvester", "secondaryrole": "builder", "activerole": "harvester", "activetask": { "task": "build", "room":"null", "pos":{ "x":"0", "y":"0" } } }';
-
 var builder_spec = '{ "variant":"default", "parts": [ "WORK", "CARRY", "MOVE" ], "primaryrole": "builder", "secondaryrole": "harvester", "activerole": "builder", "activetask": { "task": "build", "room":"null", "pos":{ "x":"0", "y":"0" } }}';
-
 var workerSpec = '{ "variant":"default", "parts": [ "WORK", "CARRY", "MOVE" ], "task": "null", "room":"null", "pos":{ "x":"0", "y":"0" }, "targetID": "null", "status":"null" }'
-
 var task_spec = '{ "task": "null", "room":"null", "pos":{ "x":"0", "y":"0" } }'
 
 module.exports = {
