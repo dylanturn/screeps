@@ -1,5 +1,3 @@
-
-
 module.exports = {
     PopBuildTask(room) {
         return room.memory.build_queue.pop()

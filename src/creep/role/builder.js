@@ -1,5 +1,5 @@
-var room_construct = require('room.construct')
-var creep_controller = require('creep.controller')
+var room_construct = require('../../room/foreman')
+var creep_controller = require('../creep/controller')
 
 function Build(creep, constructionSite) {
     if(creep.build(constructionSite) == ERR_NOT_IN_RANGE) {
@@ -11,8 +11,6 @@ function UpgradeController(creep){
     creep.moveTo(creep.room.controller)
     creep.upgradeController(creep.room.controller)
 }
-
-
 
 module.exports = {
 

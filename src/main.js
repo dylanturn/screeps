@@ -1,17 +1,15 @@
-var config = require('config');
-var harvester = require('creep.role.harvester');
-var builder = require('creep.role.builder');
+const util = require('./util');
+var config = require('./config');
+var harvester = require('./creep/role/harvester');
+var builder = require('./creep/role/builder');
 
-var creep_populatiom_manager = require('creep.population_manager');
-var creep_controller = require('creep.controller')
+var creep_controller = require('./creep/controller')
+var creep_populatiom_manager = require('./creep/population_manager')
 
-var spawn_extent = require('room.construct.spawn.extent')
-var storage_manager = require('spawn.storage_mgmt')
 
-var pending_tasks = []
+
 var harvesters = []
 var builders = []
-var energylevel = Game.spawns[config.Get_Spawn_Name()].energy
 
 for (var i in Game.creeps) {
     var creep = Game.creeps[i];
@@ -55,15 +53,15 @@ for(var room in Game.rooms){
     }
 }
 
-var spawn = Game.spawns[config.Get_Spawn_Name()]
+var spawn = util.GetSingleRoomSpawn()
 creep_populatiom_manager.run(spawn, harvesters.length, builders.length);
 
 for (var i in Game.spawns) {
     storage_manager.run(Game.rooms[Game.spawns[i].room.name], Game.spawns[i])
 }
 
-console.log(" -- Tick Stats "+ config.Get_Spawn_Name() +" -- ");
-console.log("Energy Level: " + energylevel);
+console.log(" -- Tick Stats "+ "Chica" +" -- ");
+console.log("Energy Level: " + Game.spawns[util.GetSingleRoomSpawn].energy);
 console.log("Harvesters:   " + harvesters.length);
 console.log("Builders:     " + builders.length);
 

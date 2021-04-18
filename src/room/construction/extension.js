@@ -1,6 +1,6 @@
-var config = require('config')
-var creep_populatiom_manager = require('creep.population_manager')
-var room_construct = require('room.construct')
+var config = require('../../config')
+var creep_populatiom_manager = require('../../creep/population_manager')
+var room_construct = require('../foreman')
 
 module.exports = {
     run(room, spawn) {

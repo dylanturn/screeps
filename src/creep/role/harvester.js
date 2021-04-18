@@ -1,5 +1,5 @@
-var config = require('config')
-var creep_controller = require('creep.controller')
+var config = require('../../config')
+var creep_controller = require('../controller')
 
 module.exports = {
     run(creep) {

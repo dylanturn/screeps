@@ -1,4 +1,4 @@
-var config = require('config')
+var config = require('../config')
 
 function getEnergy(creep) {
 	var closest_spawn = getClosestByType(creep, FIND_MY_SPAWNS)

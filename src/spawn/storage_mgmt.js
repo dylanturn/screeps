@@ -1,5 +1,5 @@
-var config = require('config')
-var room_construct = require('room.construct')
+var config = require('../config')
+var room_construct = require('../room/foreman')
 
 module.exports = {
     run(room, spawn) {
