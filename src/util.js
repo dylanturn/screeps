@@ -36,6 +36,22 @@ function getClosestByPos(posA, posArray){
   return closest_pos
 }
 
+function getClosestByObject(posA, objects) {
+  posArray = []
+  for(var i in objects){
+    posArray.push(objects[i].pos)
+  }
+
+  var closest_pos = getClosestByPos(posA, posArray)
+
+  for(var i in objects){
+   if(objects[i].pos == closest_pos) {
+     return objects[i]
+   }
+  }
+  return null
+}
+
 // Determines the closest object to a creep by type
 function getClosestByType(creep, type) {
   // Saving this for later
@@ -84,6 +100,11 @@ module.exports = {
     // Returns the closest position(B) to the given position(A)
     GetClosestByPos(posA, ...posB){
       return getClosestByPos(posA, ...posB)
+    },
+
+    // Returns the closest position(B) to the given position(A)
+    GetClosestByObject(posA, objects){
+      return getClosestByObject(posA, objects)
     },
 
     // Gets the closest thing to a creep by type

@@ -1,5 +1,6 @@
 var config = require('config')
 var util = require('util')
+var creep_util = require('creep.util')
 
 function Build(creep, constructionSite) {
     if(creep.build(constructionSite) == ERR_NOT_IN_RANGE) {
@@ -60,5 +61,6 @@ module.exports = {
                 }
             }
         }
+        return creep
     }
 };

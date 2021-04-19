@@ -42,7 +42,6 @@ module.exports = {
                 Memory.builders.push(builder.run(creep));
             }
         }
-        
         creep_population_controller.run(room);
     }
 };

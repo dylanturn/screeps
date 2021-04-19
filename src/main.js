@@ -14,12 +14,13 @@ for(var room_name in Game.rooms){
         room.memory.setup_complete = true
         console.log("Room Setup Complete!")
     }
-    
+
     construction_controller.run(room)
     creep_controller.run(room)
-    
+
     console.log(" -- Tick Stats "+ room.name +" -- ");
     console.log("Energy Level: " + util.GetFirstRoomSpawn(room).energy);
     console.log("Harvesters:   " + Memory.harvesters.length);
     console.log("Builders:     " + Memory.builders.length);
 }
+    

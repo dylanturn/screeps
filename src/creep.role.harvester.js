@@ -1,25 +1,16 @@
-var util = require('util')
+var creep_util = require('creep.util')
 
 module.exports = {
     run(creep) {
-
 		if(creep.carry.energy < creep.carryCapacity) {
-            var sources = util.GetClosestSource(creep)
-			creep.moveTo(sources);
-			creep.harvest(sources);
+            var source = creep_util.GetIdealEnergySource(creep)
+			creep.moveTo(source);
+			creep.harvest(source);
 		} else {
-			creep.moveTo(util.GetClosestSpawn(creep));
-			creep.transfer(util.GetClosestSpawn(creep), RESOURCE_ENERGY);
+			var store = creep_util.GetIdealEnergyStore(creep)
+			creep.moveTo(store);
+			creep.transfer(store, RESOURCE_ENERGY);
 		}
-		
-
-		if(creep.carry.energy < creep.carryCapacity) {
-			var sources = util.GetClosestSource(creep)
-			creep.moveTo(sources);
-			creep.harvest(sources);
-		} else {
-			creep.moveTo(util.GetClosestSpawn(creep));
-			creep.transfer(util.GetClosestSpawn(creep), RESOURCE_ENERGY);
-		}
+		return creep
     }
 };

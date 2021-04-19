@@ -7,13 +7,6 @@ var util = require('util')
 
 module.exports = {
     run(room) {
-
-/*        creeps = Game.creeps
-        for(var i in creeps) {
-
-        }
-*/
-
         var spawn = util.GetFirstRoomSpawn(room)
         var energy_level = spawn.energy
         var harvester_count = Memory.harvesters.length
