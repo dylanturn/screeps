@@ -29,7 +29,11 @@ module.exports = {
         var posX4 = origX-2   // x-1
         var posY4 = origY+2   // y+1
         
-        if (total_extensions < 4){            
+        // {"E35N39":{"name":"E35N39","energyAvailable":1,"energyCapacityAvailable":400,"visual":{"roomName":"E35N39"}}}
+        var used_capacity_pct = (room.energyAvailable / room.energyCapacityAvailable)*100
+        console.log(`Capacity Used: ${used_capacity_pct}%`)
+
+        if (total_extensions < 4 && used_capacity_pct >= 75){            
             if (room.controller.level >= 2){
                 if(construction_util.BuildOnPlain(room, posX1, posY1, STRUCTURE_EXTENSION)){
                     return {"x": posx1, "y": posy1}
