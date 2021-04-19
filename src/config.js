@@ -1,5 +1,5 @@
 var max_harvesters = 5;
-var max_builders = 5;
+var max_builders = 3;
 var build_queue_limit = 5;
 
 //var miniral_source_list = '{ "source_list": [ {"type":"oxygen", "id":"58dbc92734e898064bcc333a"} ] }'

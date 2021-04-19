@@ -1,67 +1,25 @@
-const util = require('./util');
-var config = require('./config');
-var harvester = require('./creep/role/harvester');
-var builder = require('./creep/role/builder');
+const util = require('util');
 
-var creep_controller = require('./creep/controller')
-var creep_populatiom_manager = require('./creep/population_manager')
+var construction_controller = require('construction.controller')
+var creep_controller = require('creep.controller')
 
+for(var room_name in Game.rooms){
+    room = Game.rooms[room_name]
 
-
-var harvesters = []
-var builders = []
-
-for (var i in Game.creeps) {
-    var creep = Game.creeps[i];
-    
-    if(creep.memory.activetask == "idle") {
-        creep.memory.activetask = JSON.parse('{ "task": "build", "room":"null", "pos":{ "x":"0", "y":"0" } }')
-        creep.memory.activetask.task = "move"
-        creep.memory.activetask.room = Game.creeps[i].room.name
-        creep.memory.activetask.pos.x = 30
-        creep.memory.activetask.pos.y = 30
-        break;
-    }
-
-    if(creep.memory.activetask.task == "move") {
-        var posx = creep.memory.activetask.pos.x
-        var posy = creep.memory.activetask.pos.y
-        creep.moveTo(posx,posy)
-        break;
-    }
-
-    if(creep.memory.activerole == "harvester") {
-        harvesters.push(harvester.run(creep));
-        
+    // TODO: Maybe move all this to room.controller?
+    if(!room.memory.setup_complete) {
+        console.log("Setting up room for the first time!")
+        construction_controller.setup(room)
+        creep_controller.setup(room)
+        room.memory.setup_complete = true
+        console.log("Room Setup Complete!")
     }
     
-    if(creep.memory.activerole == "builder") {
-        builders.push(builder.run(creep));
-    }
+    construction_controller.run(room)
+    creep_controller.run(room)
+    
+    console.log(" -- Tick Stats "+ room.name +" -- ");
+    console.log("Energy Level: " + util.GetFirstRoomSpawn(room).energy);
+    console.log("Harvesters:   " + Memory.harvesters.length);
+    console.log("Builders:     " + Memory.builders.length);
 }
-
-for(var room in Game.rooms){
-    if(!Game.rooms[room].memory.sources) {
-        if(!Array.isArray(Game.rooms[room].memory.build_queue)) {
-            Game.rooms[room].memory.sources = []    
-        }
-    }
-    if(!Game.rooms[room].memory.build_queue) {
-        if(!Array.isArray(Game.rooms[room].memory.build_queue)){
-            Game.rooms[room].memory.build_queue = []    
-        }
-    }
-}
-
-var spawn = util.GetSingleRoomSpawn()
-creep_populatiom_manager.run(spawn, harvesters.length, builders.length);
-
-for (var i in Game.spawns) {
-    storage_manager.run(Game.rooms[Game.spawns[i].room.name], Game.spawns[i])
-}
-
-console.log(" -- Tick Stats "+ "Chica" +" -- ");
-console.log("Energy Level: " + Game.spawns[util.GetSingleRoomSpawn].energy);
-console.log("Harvesters:   " + harvesters.length);
-console.log("Builders:     " + builders.length);
-

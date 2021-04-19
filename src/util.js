@@ -1,15 +1,9 @@
-function getRoomName(creep){
-  return creep.room.name
+function getRoomSpawns(room) {
+  return Game.rooms[room.name].find(FIND_MY_SPAWNS)
 }
 
-function getRoomSpawns(creep){
-  return creep.room.find(FIND_MY_SPAWNS)
-}
-
-function getSingleRoomSpawn(){
-  for (var i in Game.spawns) {
-    return Game.spawns[i]
-  }   
+function getFirstRoomSpawn(room){
+  return getRoomSpawns(room)[0]
 }
 
 function getRoomEnergySources(creep){
@@ -27,6 +21,19 @@ function getRoomMiniralSources(creep){
 // Calculates the distance between two points on a 2D grid
 function getDistance(posA, posB) {
   return Math.sqrt(Math.pow((posA.x-posB.x),2)+Math.pow((posA.y-posB.y),2))
+}
+
+function getClosestByPos(posA, posArray){
+  var smallest_distance = Number.MAX_SAFE_INTEGER
+  var closest_pos = null
+  for (var i in posArray){
+    var distance = getDistance(posA, posArray[i])
+    if (distance < smallest_distance) {
+        smallest_distance = distance
+        closest_pos = posArray[i]
+    }
+  }
+  return closest_pos
 }
 
 // Determines the closest object to a creep by type
@@ -54,14 +61,14 @@ module.exports = {
       return getRoomName(creep)
     },
 
-    // Returns a single spawn. Used when only one exists
-    GetSingleRoomSpawn() {
-      return getSingleRoomSpawn()
+    // Returns 1 spawn for the given room
+    GetFirstRoomSpawn(room) {
+      return getFirstRoomSpawn(room)
     },
 
-    // Gets a list of spawns for the room the given creep is in
-    GetRoomSpawns(creep) {
-      return getRoomSpawns(creep)
+    // Gets a list of spawns for the given room
+    GetRoomSpawns(room) {
+      return getRoomSpawns(room)
     },
 
     // Gets a list of energy sources inside the room the given creep is in
@@ -72,6 +79,11 @@ module.exports = {
     // Gets a list of miniral sources inside the room the given creep is in
     GetRoomMiniralSources(creep) {
       return getRoomMiniralSources(creep)
+    },
+
+    // Returns the closest position(B) to the given position(A)
+    GetClosestByPos(posA, ...posB){
+      return getClosestByPos(posA, ...posB)
     },
 
     // Gets the closest thing to a creep by type
@@ -87,6 +99,11 @@ module.exports = {
     // Gets the sources closest to the creep
     GetClosestSource(creep) {
         return getClosestByType(creep, FIND_SOURCES)
+    },
+
+    // Gets the distance between two points: posA:{x,y} and posB:{x,y}
+    GetDistance(posA, posB) {
+      return getDistance(posA, posB)
     }
 };
 
