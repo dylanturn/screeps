@@ -6,12 +6,13 @@ function getFirstRoomSpawn(room){
   return getRoomSpawns(room)[0]
 }
 
-function getRoomEnergySources(creep){
-    var source_id_list = []
-    for (var source in Game.rooms[getRoomName()].find(FIND_SOURCES)){
-        source_id_list.push(source.id)
+function getRoomEnergySources(room){
+    var found_sources = room.find(FIND_SOURCES)
+    var source_list = []
+    for (var source in found_sources){
+      source_list.push(found_sources[source])
     }
-    return source_id_list
+    return source_list
 }
 
 function getRoomMiniralSources(creep){
@@ -88,13 +89,13 @@ module.exports = {
     },
 
     // Gets a list of energy sources inside the room the given creep is in
-    GetRoomEnergySources(creep) {
-      return getRoomEnergySources(creep)
+    GetRoomEnergySources(room) {
+      return getRoomEnergySources(room)
     },
 
     // Gets a list of miniral sources inside the room the given creep is in
-    GetRoomMiniralSources(creep) {
-      return getRoomMiniralSources(creep)
+    GetRoomMiniralSources(room) {
+      return getRoomMiniralSources(room)
     },
 
     // Returns the closest position(B) to the given position(A)

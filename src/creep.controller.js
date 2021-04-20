@@ -2,10 +2,9 @@
 * Responsible for helping the creeps decide which tasks to work *
 *****************************************************************/
 
-var util = require('util')
-var creep_population_controller = require('creep.population.controller')
-var harvester = require('creep.role.harvester');
-var builder = require('creep.role.builder');
+const creep_population_controller = require('creep.population.controller')
+const harvester = require('creep.role.harvester');
+const builder = require('creep.role.builder');
 
 module.exports = {
     setup(room) {},

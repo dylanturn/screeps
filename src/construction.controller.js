@@ -6,6 +6,7 @@
 const util = require('util');
 const construction_road = require('construction.road');
 const construction_extension = require('construction.extension');
+const construction_container = require('./construction.container');
 
 function updateConstructionSiteList(room){
     // Clear the existing array
@@ -40,7 +41,8 @@ module.exports = {
         construction_road.ConstructRoads(room, util.GetFirstRoomSpawn(room))
     },
     run(room) {
-
+        
+        construction_container.ConstructContainers(room)
         updateConstructionSiteList(room)
 
         var spawns = util.GetRoomSpawns(room)

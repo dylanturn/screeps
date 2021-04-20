@@ -2,8 +2,8 @@
 * Manages the population of our creeps by role. *
 *************************************************/
 
-var config = require('config')
-var util = require('util')
+const config = require('config')
+const util = require('util')
 
 module.exports = {
     run(room) {

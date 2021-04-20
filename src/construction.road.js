@@ -1,6 +1,4 @@
-var construction_util = require('construction.util')
-var util = require('util')
-var config = require('config')
+const construction_util = require('construction.util')
 
 module.exports = {
     ConstructRoads(room, spawn) {

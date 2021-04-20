@@ -1,26 +1,32 @@
-const util = require('util');
+const room_controller = require('./room.controller')
+const construction_controller = require('./construction.controller')
+const creep_controller = require('./creep.controller')
 
-var construction_controller = require('construction.controller')
-var creep_controller = require('creep.controller')
+for(var i in Game.rooms){
+    room = Game.rooms[i]
 
-for(var room_name in Game.rooms){
-    room = Game.rooms[room_name]
+    if(room.memory.setup_complete) {
+        room_controller.Run(room)
+        construction_controller.run(room)
+        creep_controller.run(room)
 
-    // TODO: Maybe move all this to room.controller?
-    if(!room.memory.setup_complete) {
+    } else {
         console.log("Setting up room for the first time!")
+        room_controller.Setup(room)
         construction_controller.setup(room)
         creep_controller.setup(room)
         room.memory.setup_complete = true
+        room.memory.print_tick_stats = true
         console.log("Room Setup Complete!")
     }
 
-    construction_controller.run(room)
-    creep_controller.run(room)
-
-    console.log(" -- Tick Stats "+ room.name +" -- ");
-    console.log("Energy Level: " + util.GetFirstRoomSpawn(room).energy);
-    console.log("Harvesters:   " + Memory.harvesters.length);
-    console.log("Builders:     " + Memory.builders.length);
+    if(room.memory.print_tick_stats) {
+        console.log(`--- Tick Stats: ${room.name} ---`);
+        console.log(`Harvesters:       ${Memory.harvesters.length}`);
+        console.log(`Builders:         ${Memory.builders.length}`);
+        console.log(`Energy Available: ${room.energyAvailable}`)
+        console.log(`Energy Capacity:  ${room.energyCapacityAvailable}`)
+        console.log(`Energy Used(%):   ${((room.energyAvailable / room.energyCapacityAvailable)*100).toFixed(2)}%`)
+    }
 }
     
