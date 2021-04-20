@@ -15,4 +15,5 @@ Follow This: https://docs.screeps.com/contributed/advanced_grunt.html
 
 ### General Idea
 ***Room***: Maintains (in memory) a collection of work that needs to be performed.
+
 ***Builder***: Randomly selects a task from the list, then proceeds to work the task until the task is no longer advertised by the room.
