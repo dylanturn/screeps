@@ -1,5 +1,5 @@
 const max_harvesters = 6;
-const max_builders = 2;
+const max_builders = 4;
 const build_queue_limit = 5;
 
 const harvester_spec =  '{ "variant":"default", "parts": [ "WORK", "CARRY", "MOVE" ], "primaryrole": "harvester", "secondaryrole": "builder", "activerole": "harvester", "activetask": { "task": "build", "room":"null", "pos":{ "x":"0", "y":"0" } }}'

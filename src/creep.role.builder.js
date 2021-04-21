@@ -20,9 +20,25 @@ function getEnergy(creep) {
     }
 }
 
+function findDamagedStructures(creep){
+    return creep.room.find(FIND_STRUCTURES, {
+        filter: object => object.hits < object.hitsMax
+    });
+}
+
+function repairStructures(creep){
+    var target_structure = util.GetClosestByObject(creep.pos,findDamagedStructures(creep))        
+    if( creep.repair(target_structure) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target_structure);
+    }
+}
+
 module.exports = {
 
     run(creep) {
+
+        creep.say("🔨", false)
+
         // Id the builder doesn't have energy instruct the builder to head to the nearest spawn.
         if(creep.carry.energy == 0) {
             getEnergy(creep)
@@ -32,10 +48,15 @@ module.exports = {
             if(Memory.harvesters.length < config.GetMaxHarvesters()){
                 creep.memory.activerole = "harvester"
             } else {
-
+                
+                // Checks to see if there are any structures that need fixing. Fixes them.
+                if(findDamagedStructures(creep).length > 0){
+                    creep.memory.activetask.task = "repair"
+                }
+                
                 // Checks to see if there are any active construction sites.
                 // If there are multiple the creep will go to the closest one.
-                if(creep.room.memory.construction.length > 0){
+                else if(creep.room.memory.construction.length > 0){
                     var construction_site_pos = util.GetClosestByPos(creep.pos,creep.room.memory.construction)
                     creep.memory.activetask.task = "build"
                     creep.memory.activetask.pos.x = construction_site_pos.x
@@ -45,6 +66,9 @@ module.exports = {
                 }
 
                 switch(creep.memory.activetask.task) {
+                    case "repair":
+                        repairStructures(creep)
+                        break;
 
                     case "build":
                         var posx = creep.memory.activetask.pos.x

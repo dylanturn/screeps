@@ -24,7 +24,7 @@ module.exports = {
                 creep.memory.activetask.pos.y = 30
                 break;
             }
-        
+            
             if(creep.memory.activetask.task == "move") {
                 var posx = creep.memory.activetask.pos.x
                 var posy = creep.memory.activetask.pos.y

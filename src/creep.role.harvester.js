@@ -25,6 +25,10 @@ function storeEnergy(creep){
 
 module.exports = {
     run(creep) {
+
+		
+		creep.say("🌽", false)
+
 		if(creep.carry.energy < creep.carryCapacity) {
 			if(Memory.creeps[creep.name].mine_alternate) {
 				mineAlternateSource(creep)
