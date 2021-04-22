@@ -1,4 +1,5 @@
 const util = require('./util')
+const room_util = require('./room.util')
 const constants = require('./constants')
 
 function getBaseTaskSpec(){
@@ -19,7 +20,7 @@ function getIdealEnergySource(creep) {
 
 function getAlternateEnergySource(creep) {
   var ideal_source = getIdealEnergySource(creep)
-  var room_sources = util.GetRoomEnergySources(creep.room)
+  var room_sources = room_util.GetEnergySources(creep.room)
   const index = room_sources.indexOf(ideal_source);
   if (index > -1) {
     room_sources.splice(index, 1);
@@ -68,7 +69,7 @@ module.exports = {
   GetBaseTaskSpec(){
     return getBaseTaskSpec()
   },
-  
+
   GetBaseRoleSpec(){
     return getBaseRoleSpec()
   },

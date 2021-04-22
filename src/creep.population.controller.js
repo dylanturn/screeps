@@ -40,8 +40,13 @@ function reassignCreep(new_role){
         }
     )
     // Update the active role
-    reassignment_candidates[0].memory.active_role = constants.CREEP_ROLES.HARVESTER
-    return reassignment_candidates[0]
+    if(reassignment_candidates.length > 0){
+        reassignment_candidates[0].memory.active_role = constants.CREEP_ROLES.HARVESTER
+        return reassignment_candidates[0]
+    } else {
+        return null
+    }
+    
 }
 
 function spawnCreep(spawn, creep_spec) {
@@ -56,7 +61,7 @@ function spawnCreep(spawn, creep_spec) {
 }
 function setup(room) {}
 function run(room) {
-    
+
     var harvester_count = room.memory.harvesters.length
     var builder_count = room.memory.builders.length
 
