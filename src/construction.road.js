@@ -1,6 +1,13 @@
-const construction_util = require('construction.util')
+const construction_util = require('./construction.util')
 
 module.exports = {
+    ConstructRoad(posA, posB){
+        result = PathFinder.search(posA, {"pos": posB, "range": 1})
+        for(k in result.path){
+            var path = result.path[k]
+            construction_util.BuildOnPlain(room, path.x, path.y, STRUCTURE_ROAD)
+        }
+    },
     ConstructRoads(room, spawn) {
         energy_sources = room.find(FIND_SOURCES)
         for(i in energy_sources) {

@@ -1,5 +1,5 @@
 
-function setup(room) {
+function setup(room){
     if(!room.memory.spawns) {
         if(!Array.isArray(room.memory.spawns)) {
             room.memory.spawns = []
@@ -16,10 +16,15 @@ function setup(room) {
     }
 }
 
+function run(room){
+
+}
+
 module.exports = {
     Setup(room){
         setup(room)
     },
     Run(room) {
+        run(room)
     }
 }

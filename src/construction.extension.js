@@ -1,4 +1,5 @@
-const construction_util = require('construction.util')
+const construction_util = require('./construction.util')
+const construction_road = require('./construction.road')
 
 module.exports = {
     ConstructSpawnExtensions(room, spawn) {
@@ -35,10 +36,13 @@ module.exports = {
                 if(construction_util.BuildOnPlain(room, posX1, posY1, STRUCTURE_EXTENSION)){
                     return {"x": posx1, "y": posy1}
                 } else if(construction_util.BuildOnPlain(room, posX2, posY2, STRUCTURE_EXTENSION)){
+                    construction_road.ConstructRoad({"x": posx1, "y": posy1})
                     return {"x": posx2, "y": posy2}
                 } else if(construction_util.BuildOnPlain(room, posX3, posY3, STRUCTURE_EXTENSION)){
+                    construction_road.ConstructRoad({"x": posx2, "y": posy2})
                     return {"x": posx3, "y": posy3}
                 } else if(construction_util.BuildOnPlain(room, posX4, posY4, STRUCTURE_EXTENSION)){
+                    construction_road.ConstructRoad({"x": posx3, "y": posy3})
                     return {"x": posx4, "y": posy4}
                 } else {
                     return null

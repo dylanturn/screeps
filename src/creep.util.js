@@ -1,7 +1,20 @@
-const util = require('util')
+const util = require('./util')
+const constants = require('./constants')
+
+function getBaseTaskSpec(){
+  return {"task": null, "pos": {"room": null, "x": 0, "y": 0}}
+}
+
+function getBaseRoleSpec(){
+  return { "parts": [], "active_task": getBaseTaskSpec(), "active_role": null, "primary_role": null, "valid_secondary_roles": []}
+}
+
+function getClosestSource(creep){
+  return creep.pos.findClosestByRange(FIND_SOURCES)
+}
 
 function getIdealEnergySource(creep) {
-	return util.GetClosestSource(creep)
+	return getClosestSource(creep)
 }
 
 function getAlternateEnergySource(creep) {
@@ -14,42 +27,51 @@ function getAlternateEnergySource(creep) {
   return util.GetClosestByObject(creep.pos, room_sources)
 }
 
-function getIdealEnergyStore(creep) {
-	var eligible_stores = []
+function getIdealEnergyStore(creep, ACTION) {
+  
+  const energy_store_types = [STRUCTURE_CONTAINER, STRUCTURE_EXTENSION]
 
-  // Locates all the spawns that exist in the given creeps room
-  var spawns = creep.room.find(FIND_MY_SPAWNS)
-	for (var i in spawns){
-		var spawn = spawns[i]
-		if(spawn.energy < spawn.energyCapacity){
-			eligible_stores.push(spawn)
-		}
-	}
+  switch(ACTION) {
 
-  // Locates all the extensions that exist in the given creeps room
-  var extensions = creep.room.find(FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_EXTENSION}})
-	for (var i in extensions){
-		var extension = extensions[i]
-		if(extension.energy < extension.energyCapacity){
-			eligible_stores.push(extension)
-		}
-	}
+    // If we're trying to load energy then we need to find stores that have energy
+    case constants.WITHDRAW_ENERGY:
+      eligible_stores = room.find(FIND_STRUCTURES, {
+        filter: (i) => energy_store_types.includes(i.structureType) &&
+                       i.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+      });
+      break;
+    
+    // If we're trying to deposit energy then we need to find stores that aren't empty
+    // First locates all the containers and extensions
+    // Second, combines the first list with a second list of MY spawns
+    // Third, sorts then and returns the closest one.
+    case constants.DEPOSIT_ENERGY:
+      eligible_stores = room.find(FIND_STRUCTURES, {
+        filter: (i) => energy_store_types.includes(i.structureType) &&
+                       i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+      }).concat(room.find(FIND_MY_SPAWNS, {
+        filter: (i) => i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+      }))
+      break;
+      
+    default:
+      eligible_stores = []
+  }
 
-  // Locates all the storage containers that exist in the given creeps room
-  var containers = creep.room.find(FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_CONTAINER}})
-	for (var i in containers){
-		var container = containers[i]
-		if(container.energy < container.energyCapacity){
-			eligible_stores.push(container)
-		}
-	}
+  // Return the list of stores ordered by distance to the creep
+  return util.GetClosestByObject(creep.pos, eligible_stores)
 
-	return util.GetClosestByObject(creep.pos, eligible_stores)
 }
 
-
-
 module.exports = {
+
+  GetBaseTaskSpec(){
+    return getBaseTaskSpec()
+  },
+  
+  GetBaseRoleSpec(){
+    return getBaseRoleSpec()
+  },
 
   // Returns the closest instance of the given type for the given creep
   GetClosestByType(creep, type) {
@@ -77,7 +99,22 @@ module.exports = {
   },
 
   // Returns the ideal energy store for the given creep
-  GetIdealEnergyStore(creep) {
-    return getIdealEnergyStore(creep)
+  GetIdealEnergyStore(creep, ACTION) {
+    return getIdealEnergyStore(creep, ACTION)
+  },
+
+  // Gets the closest thing to a creep by type
+  GetClosestByType(creep, type) {
+    return getClosestByType(creep, type)
+  },
+
+  // Gets the spawn closest to the creep
+  GetClosestSpawn(creep) {
+    return getClosestByType(creep, FIND_MY_SPAWNS)
+  },
+
+  // Gets the sources closest to the creep
+  GetClosestSource(creep) {
+      return getClosestByType(creep, FIND_SOURCES)
   }
 }

@@ -11,9 +11,10 @@
 
 Game.spawns['Chicago'].pos.x
     
-    Game.spawns['Spawn_Alpha'].createCreep([WORK, CARRY, MOVE],null, {primaryrole: 'harvester', secondaryrole: 'null', activerole: 'harvester', activetask: 'idle'})
     
     
+  // Saving this for later
+  // points.sort(function(a, b){return a-b});
     
     
     

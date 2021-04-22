@@ -36,34 +36,24 @@ function filterBuildPosArray(room, pos_array){
     return pos_array
 }
 
-
-function addTask(room, task_type, posX, posY){
-    var task_spec = JSON.parse('{ "task": "null", "room":"null", "pos":{ "x":"0", "y":"0" }}')
-    task_spec.task = task_type
-    task_spec.room = room.name
-    task_spec.pos.x = posX
-    task_spec.pos.y = posY
-    room.memory.build_queue.push(task_spec)
-}
-
 module.exports = {
-    
+
     // Returns the road closest to the given object
     FindClosestRoad(room, object){
         return findClosestRoad(room, object)
     },
 
+    // Returns a book indicating wether or not the position can be built on
     ValidateBuildPos(room, pos){
         return validateBuildPos(room, pos)
     },
 
+    // Accepts and array of positions and returns the subset that can be built on
     FilterBuildPosArray(room, pos_array){
         return filterBuildPosArray(room, pos_array)
     },
 
-    PopBuildTask(room) {
-        return room.memory.build_queue.pop()
-    },
+    // Creates a construction site at the given position for the given structure type
     BuildOnPlain(room, posX, posY, type) {
         if( room.lookAt(posX,posY)[0].type == "terrain" ) {
            if( room.lookAt(posX,posY)[0].terrain == "plain" ) {
@@ -73,7 +63,7 @@ module.exports = {
                 }
             } 
         }
-        console.log(`Failed to add build task at ${posX} - ${posY}`)
+        console.log(`Failed to add build task in room ${room.name} of type ${type} at ${posX} - ${posY}`)
         return false;
     }
 }
