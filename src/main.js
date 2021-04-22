@@ -32,7 +32,6 @@ for(let i in Game.rooms){
     if(room.memory.setup_complete) {
         room_controller.Run(room)
         construction_controller.Run(room)
-        console.log("control pop")
         creep_population_controller.Run(room)
         creep_controller.Run(room)
 
