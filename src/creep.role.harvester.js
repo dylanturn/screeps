@@ -18,7 +18,7 @@ function mineIdealSource(creep){
 }
 
 function mineAlternateSource(creep){
-	var source = Game.getObjectById(Memory.creeps[creep.name].alternate_source)
+	var source = Game.getObjectById(Memory.creeps[creep.name]["alternate_source"])
 	if (ERR_NOT_IN_RANGE === creep.harvest(source)) {
 		return creep.moveTo(source)
 	}
@@ -37,18 +37,18 @@ function run(creep) {
 	creep.say(creep.memory.active_role, false)
 
 	if(creep.carry.energy < creep.carryCapacity) {
-		if(Memory.creeps[creep.name].mine_alternate) {
+		if(Memory.creeps[creep.name]["mine_alternate"]) {
 			mineAlternateSource(creep)
 		} else {
 			if(ERR_NO_PATH == mineIdealSource(creep)){
-				Memory.creeps[creep.name].mine_alternate = true
-				Memory.creeps[creep.name].alternate_source = creep_util.GetAlternateEnergySource(creep).id
+				Memory.creeps[creep.name]["mine_alternate"] = true
+				Memory.creeps[creep.name]["alternate_source"] = creep_util.GetAlternateEnergySource(creep).id
 			}
 		}
 	} else {
 		if(OK == storeEnergy(creep)){
-			Memory.creeps[creep.name].mine_alternate = false
-			Memory.creeps[creep.name].alternate_source = null
+			Memory.creeps[creep.name]["mine_alternate"] = false
+			Memory.creeps[creep.name]["alternate_source"] = null
 		}
 	}
 	return {
