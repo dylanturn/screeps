@@ -1,41 +1,73 @@
 const { LOG_LEVEL, LogLevel } = require('./constants')
 
+/**
+ * Sets up the global memory objects.
+ */
 function globalSetup() {
   if (typeof Memory["tick"] === undefined) {
     Memory["tick"] = true
   }
-  if (typeof Memory["debug"] === undefined) {
-    Memory["debug"] = false
+  if (typeof Memory["log_level"] === undefined) {
+    Memory["log_level"] = LOG_LEVEL.INFO
   }
 }
 
 /**
- * Sets up the memory objects that will be used in this room.
+ * Logs Trace, Debug, Info, and Error messages to the console.
  * @param {LogLevel} level - The log level for this log message
  * @param {String} message - The message for this log message
+ * @param {String} component - The component this message is being logged from
  */
-function logMsg(level, message) {
-  if (
-      (
-        level !== LOG_LEVEL.INFO ||
-        level !== LOG_LEVEL.ERROR
-      ) &&
-      !Memory["debug"]
-    ) return;
+function logMsg(level, message, component="unknown") {
 
-  switch (level) {
-    case (LOG_LEVEL.TRACE):
-      console.trace(message)
-      break;
-    case (LOG_LEVEL.DEBUG):
-      console.debug(message)
-      break;
-    case (LOG_LEVEL.INFO):
-      console.log(message)
-      break;
-    case (LOG_LEVEL.ERROR):
-      console.error(message)
-      break;
+  const trace_levels = [
+    LOG_LEVEL.TRACE
+  ]
+
+  const debug_levels = [
+    LOG_LEVEL.DEBUG
+  ].concat(trace_levels)
+
+  const info_levels = [
+    LOG_LEVEL.INFO
+  ].concat(debug_levels)
+
+  const error_levels = [
+    LOG_LEVEL.ERROR
+  ].concat(info_levels)
+
+  /**
+   * A closure to standardize the console message output
+   * @param {String} level 
+   * @param {String} component 
+   * @param {String} message 
+   */
+  const outputMsg = (level, component, message) => {
+    console.log(`${level}\t-\t${component}\n${message}`)
+  };
+
+  /// If this is a TRACE message we will output it here
+  if(trace_levels.includes(level)){
+    console.trace(message)
+    outputMsg(level, component, message)
+  }
+  
+  // If this is a DEBUG message we will output it here
+  else if(debug_levels.includes(level)){
+    console.debug(message)
+    outputMsg(level, component, message)
+  }
+  
+  // If this is an INFO message we will output it here
+  else if(info_levels.includes(level)){
+    console.log(message)
+    outputMsg(level, component, message)
+  }
+
+  // If this is an ERROR message we will output it here
+  else if(error_levels.includes(level)){
+    console.error(message)
+    outputMsg(level, component, message)
   }
 }
 
@@ -83,9 +115,6 @@ function binHash(word_list, bin_count) {
     binned_words.push(word_hash_list.filter(word => word >= index && word <= index + spread))
   }
 }
-
-
-
 
 
 // Calculates the distance between two points on a 2D grid

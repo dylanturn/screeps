@@ -38,13 +38,13 @@ for (let i in Game.rooms) {
   }
 
   if (Memory["print_tick_stats"] && room.memory["print_tick_stats"]) {
-    LogMsg(LOG_LEVEL.INFO, `--- Tick Stats: ${room.name} ---`)
-    LogMsg(LOG_LEVEL.INFO, `Harvesters:       ${room.memory["harvesters"].length}`)
-    LogMsg(LOG_LEVEL.INFO, `Builders:         ${room.memory["builders"].length}`)
-    LogMsg(LOG_LEVEL.INFO, `Workers:          ${room.memory["workers"].length}`)
-    LogMsg(LOG_LEVEL.INFO, `Transporters:     ${room.memory["transporters"].length}`)
-    LogMsg(LOG_LEVEL.INFO, `Energy Available: ${room.energyAvailable}`)
-    LogMsg(LOG_LEVEL.INFO, `Energy Capacity:  ${room.energyCapacityAvailable}`)
-    LogMsg(LOG_LEVEL.INFO, `Energy Used(%):   ${((room.energyAvailable / room.energyCapacityAvailable) * 100).toFixed(2)}%`)
+    console.log(`--- Tick Stats: ${room.name} ---`)
+    console.log(`Harvesters:       ${room.memory["harvesters"].length}`)
+    console.log(`Builders:         ${room.memory["builders"].length}`)
+    console.log(`Workers:          ${room.memory["workers"].length}`)
+    console.log(`Transporters:     ${room.memory["transporters"].length}`)
+    console.log(`Energy Available: ${room.energyAvailable}`)
+    console.log(`Energy Capacity:  ${room.energyCapacityAvailable}`)
+    console.log(`Energy Used(%):   ${((room.energyAvailable / room.energyCapacityAvailable) * 100).toFixed(2)}%`)
   }
 }
