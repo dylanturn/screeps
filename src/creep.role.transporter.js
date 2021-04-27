@@ -17,11 +17,11 @@ function run(creep) {
   creep.say(creep.memory.active_role, false)
 
   const energy_store_types = [STRUCTURE_CONTAINER]
-  
+
   if (creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
-    
+
     var stores = creep.room.find(FIND_STRUCTURES, {
-      filter: (i) => 
+      filter: (i) =>
         energy_store_types.includes(i.structureType) &&
         i.store.getUsedCapacity(RESOURCE_ENERGY) > 0
     })
@@ -37,8 +37,8 @@ function run(creep) {
       filter: (i) => i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
     }).concat(creep.room.find(FIND_STRUCTURES, {
       filter: (i) => i.structureType == STRUCTURE_EXTENSION &&
-                     i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-                     
+        i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+
     }))
 
     var spawn = creep.pos.findClosestByPath(spawns)
@@ -49,11 +49,11 @@ function run(creep) {
   }
 
   return {
-		"id": creep.id,
-		"name": creep.name,
-		"role": creep.saying,
-		"ticks_to_live": creep.ticksToLive
-	}
+    "id": creep.id,
+    "name": creep.name,
+    "role": creep.saying,
+    "ticks_to_live": creep.ticksToLive
+  }
 }
 
 module.exports = {

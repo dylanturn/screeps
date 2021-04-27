@@ -2,37 +2,37 @@ const util = require('./util')
 const room_util = require('./room.util')
 const constants = require('./constants')
 
-function getBaseTaskSpec(){
-  return {"task": null, "pos": {"room": null, "x": 0, "y": 0}}
+function getBaseTaskSpec() {
+  return { "task": null, "pos": { "room": null, "x": 0, "y": 0 } }
 }
 
-function getBaseRoleSpec(){
-  return { "parts": [], "active_task": getBaseTaskSpec(), "active_role": null, "primary_role": null, "valid_secondary_roles": []}
+function getBaseRoleSpec() {
+  return { "parts": [], "active_task": getBaseTaskSpec(), "active_role": null, "primary_role": null, "valid_secondary_roles": [] }
 }
 
-function getClosestSource(creep){
+function getClosestSource(creep) {
   return creep.pos.findClosestByRange(FIND_SOURCES)
 }
 
 function getIdealEnergySource(creep) {
-	return getClosestSource(creep)
+  return getClosestSource(creep)
 }
 
 
 function widthdrawEnergy(creep) {
-	var closest_store = getIdealEnergyStore(creep, constants.WITHDRAW_ENERGY)
-    if(creep.withdraw(widthdrawEnergy, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(widthdrawEnergy);
-    }
+  var closest_store = getIdealEnergyStore(creep, constants.WITHDRAW_ENERGY)
+  if (creep.withdraw(widthdrawEnergy, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+    creep.moveTo(widthdrawEnergy);
+  }
 }
 
-function depositEnergy(creep){
-	var store = getIdealEnergyStore(creep, constants.DEPOSIT_ENERGY)
-	if (ERR_NOT_IN_RANGE === creep.transfer(store, RESOURCE_ENERGY)) {
-		return creep.moveTo(store);
-	} else {
-		return OK
-	}
+function depositEnergy(creep) {
+  var store = getIdealEnergyStore(creep, constants.DEPOSIT_ENERGY)
+  if (ERR_NOT_IN_RANGE === creep.transfer(store, RESOURCE_ENERGY)) {
+    return creep.moveTo(store);
+  } else {
+    return OK
+  }
 }
 
 function getAlternateEnergySource(creep) {
@@ -50,18 +50,18 @@ function getIdealEnergyStore(creep, ACTION) {
 
   const energy_store_types = [STRUCTURE_CONTAINER, STRUCTURE_EXTENSION]
 
-  switch(ACTION) {
+  switch (ACTION) {
 
     // If we're trying to load energy then we need to find stores that have energy
     case constants.WITHDRAW_ENERGY:
       var eligible_stores = room.find(FIND_STRUCTURES, {
         filter: (i) => energy_store_types.includes(i.structureType) &&
-                       i.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+          i.store.getUsedCapacity(RESOURCE_ENERGY) > 0
       }).concat(room.find(FIND_MY_SPAWNS, {
         filter: (i) => i.store.getUsedCapacity(RESOURCE_ENERGY) > 0
       }))
       break;
-    
+
     // If we're trying to deposit energy then we need to find stores that aren't empty
     // First locates all the containers and extensions
     // Second, combines the first list with a second list of MY spawns
@@ -69,12 +69,12 @@ function getIdealEnergyStore(creep, ACTION) {
     case constants.DEPOSIT_ENERGY:
       var eligible_stores = room.find(FIND_STRUCTURES, {
         filter: (i) => energy_store_types.includes(i.structureType) &&
-                       i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+          i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
       }).concat(room.find(FIND_MY_SPAWNS, {
         filter: (i) => i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
       }))
       break;
-      
+
     default:
       var eligible_stores
   }
@@ -86,11 +86,11 @@ function getIdealEnergyStore(creep, ACTION) {
 
 module.exports = {
 
-  GetBaseTaskSpec(){
+  GetBaseTaskSpec() {
     return getBaseTaskSpec()
   },
 
-  GetBaseRoleSpec(){
+  GetBaseRoleSpec() {
     return getBaseRoleSpec()
   },
 
@@ -126,6 +126,6 @@ module.exports = {
 
   // Gets the sources closest to the creep
   GetClosestSource(creep) {
-      return util.getClosestByType(creep, FIND_SOURCES)
+    return util.getClosestByType(creep, FIND_SOURCES)
   }
 }

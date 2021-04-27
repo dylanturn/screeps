@@ -2,6 +2,8 @@
 * Manages the population of our creeps by role. *
 *************************************************/
 
+const { LogMsg } = require('./util')
+const { LOG_LEVEL } = require('./constants')
 const constants = require('./constants')
 const creep_role_harvester = require('./creep.role.harvester')
 const creep_role_worker = require('./creep.role.worker')
@@ -23,7 +25,7 @@ function getDesiredBuilders(room) {
 }
 
 function getDesiredWorkers(room) {
-  if(room.memory.builders.length == getDesiredBuilders(room)){
+  if (room.memory.builders.length == getDesiredBuilders(room)) {
     return max_workers
   }
   return 0
@@ -31,13 +33,15 @@ function getDesiredWorkers(room) {
 
 function getDesiredTransporters(room) {
   const containers = room.find(FIND_STRUCTURES,
-    {filter: function(object) {
-      return  object.structureType == STRUCTURE_STORAGE ||
-              object.structureType == STRUCTURE_CONTAINER
-  }});
-  if(containers.length > 0){
+    {
+      filter: function (object) {
+        return object.structureType == STRUCTURE_STORAGE ||
+          object.structureType == STRUCTURE_CONTAINER
+      }
+    });
+  if (containers.length > 0) {
     return max_transporters
-  } 
+  }
   return 0
 }
 
@@ -50,7 +54,7 @@ function reassignCreep(new_role) {
     }
   ).filter(
     function (creep) {
-      if(creep.memory["valid_secondary_roles"]){
+      if (creep.memory["valid_secondary_roles"]) {
         return creep.memory["valid_secondary_roles"].includes(new_role)
       }
     }
@@ -66,15 +70,15 @@ function reassignCreep(new_role) {
 }
 
 // Removes references to creeps that no longer exist. This helps control CPU usage.
-function populationControl(room){
-  let screep_name_list = Object.keys(Game.creeps)  
+function populationControl(room) {
+  let screep_name_list = Object.keys(Game.creeps)
   let registered_creeps = Object.keys(Memory.creeps)
-  for(let i in registered_creeps){
-    if(!screep_name_list.includes(registered_creeps[i])){
-      console.log(`Delete Creep: ${registered_creeps[i]}`)
+  for (let i in registered_creeps) {
+    if (!screep_name_list.includes(registered_creeps[i])) {
+      LogMsg(LOG_LEVEL.INFO, `Delete Creep: ${registered_creeps[i]}`)
       delete Memory.creeps[registered_creeps[i]]
     }
-  } 
+  }
 }
 
 function spawnCreep(spawn, creep_spec) {
@@ -127,15 +131,15 @@ function run(room) {
 
   // Make sure that at the very least we have harvesters binging in the energy
   // We've got to do this to prevent against colony collapse
-  if(harvester_count >= getDesiredHarvesters(room)){
+  if (harvester_count >= getDesiredHarvesters(room)) {
     if (builder_count < getDesiredBuilders(room)) {
       spawnCreep(spawn, creep_role_builder.GetSpec())
     }
-  
+
     if (worker_count < getDesiredWorkers(room)) {
       spawnCreep(spawn, creep_role_worker.GetSpec())
     }
-  
+
     if (transporter_count < getDesiredTransporters(room)) {
       spawnCreep(spawn, creep_role_transporter.GetSpec())
     }
@@ -164,7 +168,7 @@ module.exports = {
     try {
       run(room)
     } catch (err) {
-      console.log(`The creep population controller has failed with error:\n${err} - ${err.stack}`)
+      LogMsg(LOG_LEVEL.ERROR, `The creep population controller has failed with error:\n${err} - ${err.stack}`)
     }
   }
 };

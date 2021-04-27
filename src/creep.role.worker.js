@@ -6,7 +6,7 @@ function getSpec() {
 
   // TODO: This part should be dependent on how many spawn extensions we've got
   role_spec.parts = [WORK, CARRY, MOVE]
-  
+
   role_spec.primary_role = constants.CREEP_ROLES.WORKER
   role_spec.valid_secondary_roles = [constants.CREEP_ROLES.BUILDER]
   role_spec.active_role = role_spec.primary_role
@@ -14,7 +14,7 @@ function getSpec() {
 }
 
 function upgradeController(creep) {
-  if (OK !== creep.upgradeController(creep.room.controller)){
+  if (OK !== creep.upgradeController(creep.room.controller)) {
     creep.moveTo(creep.room.controller)
   }
 }
@@ -35,11 +35,11 @@ function run(creep) {
     upgradeController(creep)
   }
   return {
-		"id": creep.id,
-		"name": creep.name,
-		"role": creep.saying,
-		"ticks_to_live": creep.ticksToLive
-	}
+    "id": creep.id,
+    "name": creep.name,
+    "role": creep.saying,
+    "ticks_to_live": creep.ticksToLive
+  }
 }
 
 module.exports = {

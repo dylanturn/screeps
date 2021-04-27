@@ -3,6 +3,8 @@
 * structures to create construction sites for.  *
 *************************************************/
 
+const { LogMsg } = require('./util')
+const { LOG_LEVEL } = require('./constants')
 const construction_road = require('./construction.road');
 const construction_extension = require('./construction.extension');
 const construction_container = require('./construction.container');
@@ -20,11 +22,11 @@ function setupMemory(room) {
 function updateConstructionSiteList(room) {
   room.memory.construction = []
   room.find(FIND_MY_CONSTRUCTION_SITES).forEach(function (site) {
-  room.memory.construction.push({ 
-    "type": site.structureType,
-    "progress": site.progress,
-    "progress_total": site.progressTotal,
-    "pos": site.pos
+    room.memory.construction.push({
+      "type": site.structureType,
+      "progress": site.progress,
+      "progress_total": site.progressTotal,
+      "pos": site.pos
     })
   });
 }
@@ -39,7 +41,7 @@ function setup(room) {
 function run(room) {
 
   construction_container.ConstructContainers(room)
-  
+
   // Handles constructing new spawn extensions
   room.find(FIND_MY_SPAWNS).forEach(function (spawn) {
     construction_extension.ConstructSpawnExtensions(room, spawn)
@@ -57,7 +59,7 @@ module.exports = {
       run(room)
     }
     catch (err) {
-      console.log(`The construction controller has failed with error:\n${err} - ${err.stack}`)
+      LogMsg(LOG_LEVEL.ERROR, `The construction controller has failed with error:\n${err} - ${err.stack}`)
     }
   }
 }
