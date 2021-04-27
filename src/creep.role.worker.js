@@ -3,9 +3,12 @@ const creep_util = require('./creep.util')
 
 function getSpec() {
   let role_spec = creep_util.GetBaseRoleSpec()
+
+  // TODO: This part should be dependent on how many spawn extensions we've got
+  role_spec.parts = [WORK, CARRY, MOVE]
+  
   role_spec.primary_role = constants.CREEP_ROLES.WORKER
   role_spec.valid_secondary_roles = [constants.CREEP_ROLES.BUILDER]
-  role_spec.parts = [WORK, CARRY, MOVE]
   role_spec.active_role = role_spec.primary_role
   return role_spec
 }

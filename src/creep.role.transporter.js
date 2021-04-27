@@ -3,9 +3,12 @@ const creep_util = require('./creep.util')
 
 function getSpec() {
   let role_spec = creep_util.GetBaseRoleSpec()
+
+  // TODO: This part should be dependent on how many spawn extensions we've got
+  role_spec.parts = [WORK, CARRY, MOVE]
+
   role_spec.primary_role = constants.CREEP_ROLES.TRANSPORTER
   role_spec.valid_secondary_roles = [constants.CREEP_ROLES.HARVESTER]
-  role_spec.parts = [WORK, CARRY, MOVE]
   role_spec.active_role = role_spec.primary_role
   return role_spec
 }
@@ -31,9 +34,9 @@ function run(creep) {
   } else {
 
     var spawns = creep.room.find(FIND_MY_SPAWNS, {
-      filter: (i) => i.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+      filter: (i) => i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
     }).concat(creep.room.find(FIND_STRUCTURES, {
-      filter: (i) => i.structureType === STRUCTURE_EXTENSION &&
+      filter: (i) => i.structureType == STRUCTURE_EXTENSION &&
                      i.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                      
     }))
