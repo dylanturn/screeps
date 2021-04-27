@@ -34,16 +34,16 @@ module.exports = {
         if (total_extensions < 4 && used_capacity_pct >= 90){            
             if (room.controller.level >= 2){
                 if(construction_util.BuildOnPlain(room, posX1, posY1, STRUCTURE_EXTENSION)){
-                    return {"x": posx1, "y": posy1}
+                    return {"x": posX1, "y": posY1}
                 } else if(construction_util.BuildOnPlain(room, posX2, posY2, STRUCTURE_EXTENSION)){
-                    construction_road.ConstructRoad({"x": posx1, "y": posy1})
-                    return {"x": posx2, "y": posy2}
+                    construction_road.ConstructRoad({"x": posX1, "y": posY1})
+                    return {"x": posX2, "y": posY2}
                 } else if(construction_util.BuildOnPlain(room, posX3, posY3, STRUCTURE_EXTENSION)){
-                    construction_road.ConstructRoad({"x": posx2, "y": posy2})
-                    return {"x": posx3, "y": posy3}
+                    construction_road.ConstructRoad({"x": posX2, "y": posY2})
+                    return {"x": posX3, "y": posY3}
                 } else if(construction_util.BuildOnPlain(room, posX4, posY4, STRUCTURE_EXTENSION)){
-                    construction_road.ConstructRoad({"x": posx3, "y": posy3})
-                    return {"x": posx4, "y": posy4}
+                    construction_road.ConstructRoad({"x": posX3, "y": posY3})
+                    return {"x": posX4, "y": posY4}
                 } else {
                     return null
                 }   

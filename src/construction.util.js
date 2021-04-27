@@ -16,7 +16,7 @@ function findClosestRoad(room, object){
 // Accepts a map position and returns true if it can be built on
 function validateBuildPos(room, pos){
     // Get the contents of the given position
-    position_content = room.lookAt(pos.x, pos.y)
+    var position_content = room.lookAt(pos.x, pos.y)
     // Check to make sure this is a valid position
     if( position_content[0].type === "terrain" ) {
         if( position_content[0].terrain === "plain" ) {

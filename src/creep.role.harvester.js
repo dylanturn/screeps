@@ -51,7 +51,12 @@ function run(creep) {
 			Memory.creeps[creep.name].alternate_source = null
 		}
 	}
-	return creep
+	return {
+		"id": creep.id,
+		"name": creep.name,
+		"role": creep.saying,
+		"ticks_to_live": creep.ticksToLive
+	}
 }
 
 module.exports = {

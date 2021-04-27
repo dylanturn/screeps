@@ -46,6 +46,45 @@ function repairStructures(creep){
     }
 }
 
+function selectPriorityConstructionSite(creep, site_type){
+  let selected_site_progress_pct = -1
+  let selected_site = null
+
+  let sites = creep.room.memory.construction.filter((site) => site.type == site_type)
+  for(let i in sites){
+    let site = sites[i]
+    let site_progress_pct = site.progress/site.progress_total
+    if(site_progress_pct > selected_site_progress_pct){
+      selected_site_progress_pct = site_progress_pct
+      selected_site = site
+    }
+  }
+
+  return selected_site
+}
+
+function selectConstructionSite(creep){
+  // Looks through the list of priority structure types.
+  // This will help ensure storage containers are built before roads. 
+  var PRIORITY_SITES = [
+    STRUCTURE_CONTAINER,
+    STRUCTURE_STORAGE,
+    STRUCTURE_ROAD,
+    STRUCTURE_EXTENSION
+  ]
+
+  for(let i in PRIORITY_SITES){
+    let ordered_type = PRIORITY_SITES[i]
+    let site = selectPriorityConstructionSite(creep,ordered_type)
+    if(site !== null) {
+      return site
+    }
+  }
+
+  // If we couldn't find a priority site we just get the next closest one.
+  return util.GetClosestByObject(creep.pos,creep.room.memory.construction)
+}
+
 function run(creep) {
     creep.say(creep.memory.active_role, false)
 
@@ -62,7 +101,7 @@ function run(creep) {
         // Checks to see if there are any active construction sites.
         // If there are multiple the creep will go to the closest one.
         else if(creep.room.memory.construction.length > 0){
-            var construction_site_pos = util.GetClosestByPos(creep.pos,creep.room.memory.construction)
+            var construction_site_pos = selectConstructionSite(creep).pos
             creep.memory.active_task.task = "build"
             creep.memory.active_task.pos.x = construction_site_pos.x
             creep.memory.active_task.pos.y = construction_site_pos.y
@@ -82,7 +121,7 @@ function run(creep) {
             case "build":
                 var posx = creep.memory.active_task.pos.x
                 var posy = creep.memory.active_task.pos.y
-                build(creep, room.lookAt(posx,posy)[0].constructionSite)
+                build(creep, creep.room.lookAt(posx,posy)[0].constructionSite)
                 break;
             
             case "upgrade_controller":
@@ -94,7 +133,12 @@ function run(creep) {
         }
         
     }
-    return creep
+    return {
+		"id": creep.id,
+		"name": creep.name,
+		"role": creep.saying,
+		"ticks_to_live": creep.ticksToLive
+	}
 }
 
 

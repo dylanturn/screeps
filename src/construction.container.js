@@ -1,7 +1,7 @@
 const construction_util = require('./construction.util')
 
 // 2. Determine the valid harvesting positions.
-function getValidSourceHarvestPos(source){
+function getValidSourceHarvestPos(room, source){
     const offset = 1
     var origX = source.pos.x
     var origY = source.pos.y
@@ -17,7 +17,7 @@ function getValidSourceHarvestPos(source){
     ]
 
     var valid_harvest_positions = []
-    for(i in possible_positions){
+    for(let i in possible_positions){
         var position = possible_positions[i]
 
         // Get a list of the things that occupy this space
@@ -52,7 +52,7 @@ function getValidSourceHarvestPos(source){
 
 // 4. Determine the determine the valid container placement positions
 //    that don't overlap with the valid harvest positions.
-function getIdealRoadSideBuildSite(closest_road, valid_harvest_positions){
+function getIdealRoadSideBuildSite(room, closest_road, valid_harvest_positions){
     const offset = 1
     var origX = closest_road.pos.x
     var origY = closest_road.pos.y
@@ -103,14 +103,14 @@ function constructContainers(room){
         }
 
         // 2. Determine the valid harvesting positions.
-        valid_harvest_positions = getValidSourceHarvestPos(source)
+        var valid_harvest_positions = getValidSourceHarvestPos(room, source)
 
         // 3. Get the road closest to the source.
-        closest_road = construction_util.FindClosestRoad(room, source)
+        var closest_road = construction_util.FindClosestRoad(room, source)
         
         // 4. Determine the determine the valid container placement positions
         //    that don't overlap with the valid harvest positions.
-        ideal_build_site = getIdealRoadSideBuildSite(closest_road, valid_harvest_positions)
+        var ideal_build_site = getIdealRoadSideBuildSite(room, closest_road, valid_harvest_positions)
 
         // 5. Place the container construction site.
         room.memory.sources[source.id].has_storage = buildStorageContainer(room, ideal_build_site)

@@ -8,7 +8,7 @@ const creep_role_worker = require('./creep.role.worker')
 const creep_role_builder = require('./creep.role.builder')
 const creep_role_transporter = require('./creep.role.transporter')
 
-function setup(room) {}
+function setup(room) { }
 
 function run(room) {
   const room_creeps = room.find(FIND_MY_CREEPS)
@@ -16,11 +16,11 @@ function run(room) {
   room.memory.builders = []
   room.memory.transporters = []
   room.memory.workers = []
-  
+
   for (var i in room_creeps) {
     var creep = room_creeps[i];
-
-    switch(creep.memory.active_role) {
+    
+    switch (creep.memory.active_role) {
       case constants.CREEP_ROLES.HARVESTER:
         room.memory.harvesters.push(creep_role_harvester.Run(creep));
         break;
@@ -31,19 +31,24 @@ function run(room) {
         room.memory.workers.push(creep_role_worker.Run(creep));
         break;
       case constants.CREEP_ROLES.TRANSPORTER:
-          room.memory.transporters.push(creep_role_transporter.Run(creep));
-          break;
+        room.memory.transporters.push(creep_role_transporter.Run(creep));
+        break;
       default:
         console.log(`Unknown Creep Role: ${creep.memory.activerole}`)
-      }
+    }
   }
 }
 
 module.exports = {
-  Setup(room){
+  Setup(room) {
     return setup(room)
   },
-  Run(room){
-    return run(room)
-  } 
+  Run(room) {
+    try {
+      run(room)
+    }
+    catch (err) {
+      console.log(`The creep controller has failed with error:\n${err} - ${err.stack}`)
+    }
+  }
 };

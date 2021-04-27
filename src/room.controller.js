@@ -12,240 +12,280 @@ function setup(room) {
       room.memory.sources = {}
       var sources = room.find(FIND_SOURCES)
       for (var i in sources) {
-        room.memory.sources[sources[i].id] = { "pos": sources[i].pos }
+        room.memory.sources[sources[i].id] = { 
+          "pos": sources[i].pos 
+        }
       }
     }
   }
 }
 
-function findSourceMidpoint(room) {
-  energy_sources = room.find(FIND_SOURCES)
+function findPathToFlag(room, start_pos, end_pos, range){
 
-  s_a = energy_sources[0]
-  s_b = energy_sources[1]
+  if(start_pos.x < 0 || start_pos.x > 49){return false}
+  if(start_pos.y < 0 || start_pos.y > 49){return false}
+  if(end_pos.x < 0 || end_pos.x > 49){return false}
+  if(end_pos.y < 0 || end_pos.y > 49){return false}
 
-  result = PathFinder.search(s_a.pos, { "pos": s_b.pos, "range": 1 })
-  var midpoint = result.path[Math.floor(result.path.length / 2)];
+  const room_position_start = new RoomPosition(start_pos.x, start_pos.y, room.name)
+  const room_position_end = new RoomPosition(end_pos.x, end_pos.y, room.name)
 
-  if (Memory.debug) {
-    for (var i in result.path) {
-      var point = result.path[i]
-      room.visual.circle(point, { fill: 'blue', stroke: 'transparent' });
-    }
-    room.visual.circle(midpoint, { fill: 'green', stroke: 'transparent' });
+  let goal = { pos: room_position_end, range: 0 }
+  let results = PathFinder.search(room_position_start, goal, { maxCost: range })
+
+  for (var i = 1; i <= results.path.length; i++) {
+    room.visual.line(results.path[i-1], results.path[i],{color: 'white', lineStyle: 'dashed'})
   }
-
-  return midpoint
+  return !results.incomplete
 }
 
-function inspectArea(room, midpoint, size) {
-  var top_y = midpoint.y - size
-  var left_x = midpoint.x - size
-  var bottom_y = midpoint.y + size
-  var right_x = midpoint.x + size
 
-  if(top_y < 0){
-    top_y = 0
-  }
-
-  if (left_x < 0){
-    left_x = 0
-  }
-
-  if (bottom_y > 49){
-    bottom_y = 49
-  }
-
-  if(right_x > 49){
-    right_x = 49
-  }
-
-  const area = room.lookAtArea(top_y, left_x, bottom_y, right_x, true);
-
-  return area
-}
-
-function filterBuildObstructions(room, midpoint, plot_candidates) {
-  // break the area up into 4 quadrants
-  var plot_quad_a = []// {"x": 0, "y": 0}
-  var plot_quad_b = []// {"x": 0, "y": 0}
-  var plot_quad_c = []// {"x": 0, "y": 0}
-  var plot_quad_d = []// {"x": 0, "y": 0}
-
-  var invalid_build_locations = []
-  plot_candidates.forEach(plot => {
-    if (plot.type === "structure" || plot.type === "constructionSite") {
-      invalid_build_locations.push(JSON.stringify({ "x": plot.x, "y": plot.y }))
-    }
-  })
-
-  var plot_terrain = plot_candidates.filter(plot => plot.type === "terrain")
-
-  plot_terrain.forEach(plot => {
-
-    // plot_quad_a (x-1,y-1)
-    if (plot.x <= midpoint.x && plot.y <= midpoint.y) {
-      room.visual.circle(plot, { fill: 'transparent', stroke: 'blue' })
-      if (plot.terrain !== "wall" && !invalid_build_locations.includes(JSON.stringify({ "x": plot.x, "y": plot.y }))) {
-        plot_quad_a.push(plot)
-      } else {
-        room.visual.circle(plot, { fill: 'red', stroke: 'transparent' })
-      }
-    }
-
-    // plot_quad_b (x,y-1)
-    if (plot.x >= midpoint.x && plot.y <= midpoint.y) {
-      room.visual.circle(plot, { fill: 'transparent', stroke: 'yellow' })
-      if (plot.terrain !== "wall" && !invalid_build_locations.includes(JSON.stringify({ "x": plot.x, "y": plot.y }))) {
-        plot_quad_b.push(plot)
-      } else {
-        room.visual.circle(plot, { fill: 'red', stroke: 'transparent' })
-      }
-    }
-
-    // plot_quad_c (x,y)
-    if (plot.x >= midpoint.x && plot.y >= midpoint.y) {
-      room.visual.circle(plot, { fill: 'transparent', stroke: 'purple' })
-      if (plot.terrain !== "wall" && !invalid_build_locations.includes(JSON.stringify({ "x": plot.x, "y": plot.y }))) {
-        plot_quad_c.push(plot)
-      } else {
-        room.visual.circle(plot, { fill: 'red', stroke: 'transparent' })
-      }
-    }
-
-    // plot_quad_d (x-1,y)
-    if (plot.x <= midpoint.x && plot.y >= midpoint.y) {
-      room.visual.circle(plot, { fill: 'transparent', stroke: 'white' })
-      if (plot.terrain !== "wall" && !invalid_build_locations.includes(JSON.stringify({ "x": plot.x, "y": plot.y }))) {
-        plot_quad_d.push(plot)
-      } else {
-        room.visual.circle(plot, { fill: 'red', stroke: 'transparent' })
-      }
-    }
-  })
+/**
+ * Evaluates the build area and returns an array that indicates how much open space was found.
+ * @param {Object} room - The room to conduct the search in
+ * @param {Object} origin - The point at which the search starts
+ * @param {Number} radius - The radius of the square.
+ */
+function evaluateBuildArea(room, origin, radius){
+  var north_results = []
+  var east_results = []
+  var south_results = []
+  var west_results = []
+  
+  // North
+  let pos2 = {"x": origin.x, "y": origin.y-radius, "roomName": room.name}
+  north_results.push(findPathToFlag(room, origin, pos2, radius))
+  
+  // North-East
+  let pos7 = {"x": origin.x+radius, "y": origin.y-radius, "roomName": room.name}
+  let north_east_results = findPathToFlag(room, origin, pos7, radius)
+  north_results.push(north_east_results)
+  east_results.push(north_east_results)
+  
+  // East
+  let pos3 = {"x": origin.x+radius, "y": origin.y, "roomName": room.name}
+  east_results.push(findPathToFlag(room, origin, pos3, radius))
+  
+  // South-East
+  let pos5 = {"x": origin.x+radius, "y": origin.y+radius, "roomName": room.name}
+  let south_east_results = findPathToFlag(room, origin, pos5, radius)
+  south_results.push(south_east_results)
+  east_results.push(south_east_results)
+  
+  // South
+  let pos1 = {"x": origin.x, "y": origin.y+radius, "roomName": room.name}
+  south_results.push(findPathToFlag(room, origin, pos1, radius))
+  
+  // South-West
+  let pos8 = {"x": origin.x-radius, "y": origin.y+radius, "roomName": room.name} 
+  let south_west_results = findPathToFlag(room, origin, pos8, radius)
+  south_results.push(south_west_results)
+  west_results.push(south_west_results)
+  
+  // West
+  let pos4 = {"x": origin.x-radius, "y": origin.y, "roomName": room.name}
+  west_results.push(findPathToFlag(room, origin, pos4, radius))
+  
+  // North-West
+  let pos6 = {"x": origin.x-radius, "y": origin.y-radius, "roomName": room.name}
+  let north_west_results = findPathToFlag(room, origin, pos6, radius)
+  north_results.push(north_west_results)
+  west_results.push(north_west_results)
+  
+  // North to North-East
+  let north_2_north_east_results = findPathToFlag(room, pos2, pos7, radius)
+  north_results.push(north_2_north_east_results)
+  east_results.push(north_2_north_east_results)
+  
+  // North-East to North
+  let north_east_2_north_results = findPathToFlag(room, pos7, pos3, radius)
+  north_results.push(north_east_2_north_results)
+  east_results.push(north_east_2_north_results)
+  
+  // East to South-East
+  let east_2_south_east_results = findPathToFlag(room, pos3, pos5, radius)
+  south_results.push(east_2_south_east_results)
+  east_results.push(east_2_south_east_results)
+  
+  // South-East - South
+  let south_east_2_south_results = findPathToFlag(room, pos5, pos1, radius)
+  south_results.push(south_east_2_south_results)
+  east_results.push(south_east_2_south_results)
+  
+  // South - South-West
+  let south_2_south_west_results = findPathToFlag(room, pos1, pos8, radius)
+  south_results.push(south_2_south_west_results)
+  west_results.push(south_2_south_west_results)
+  
+  // South-West - West
+  let south_west_2_west_results = findPathToFlag(room, pos8, pos4, radius)
+  south_results.push(south_west_2_west_results)
+  west_results.push(south_west_2_west_results)
+  
+  // West - North-West
+  let west_2_north_west_results = findPathToFlag(room, pos4, pos6, radius)
+  north_results.push(west_2_north_west_results)
+  west_results.push(west_2_north_west_results)
+  
+  // North-West - North
+  let north_west_2_north_results = findPathToFlag(room, pos6, pos2, radius)
+  north_results.push(north_west_2_north_results)
+  west_results.push(north_west_2_north_results)
+  
+  paintBuildArea(room, pos2, pos7,pos5, pos3, pos1, pos8, pos4, pos6)
 
   return {
-    "quad_a": plot_quad_a,
-    "quad_b": plot_quad_b,
-    "quad_c": plot_quad_c,
-    "quad_d": plot_quad_d,
-    "length": plot_quad_a.length+plot_quad_b.length+plot_quad_c.length+plot_quad_d.length
+    "north": north_results.reduce(function(a, b){return Number(a) + Number(b);},0),
+    "east": east_results.reduce(function(a, b){return Number(a) + Number(b);},0),
+    "south": south_results.reduce(function(a, b){return Number(a) + Number(b);},0),
+    "west": west_results.reduce(function(a, b){return Number(a) + Number(b);},0)
   }
 }
 
-function calculateNewSearchPoint(room, search_point, search_area_size, valid_plots){
-  
-  var quad_a_len = valid_plots.quad_a.length
-  var quad_b_len = valid_plots.quad_b.length
-  var quad_c_len = valid_plots.quad_c.length
-  var quad_d_len = valid_plots.quad_d.length
-
-  var new_search_point = { "x": 0, "y": 0 }
-
-  // Find out how far North (x, y-1) to go
-  var vector_north = (quad_a_len+quad_b_len)/search_area_size
-
-  // Find out how far South (x, y+1) to go
-  var vector_south = (quad_c_len+quad_d_len)/search_area_size
-
-  // Find out how far West (x-1, y) to go
-  var vector_west = (quad_b_len+quad_c_len)/search_area_size
-
-  // Find out how far East (x+1, y) to go
-  var vector_east = (quad_a_len+quad_d_len)/search_area_size
-
-
-  if(vector_north > vector_south){
-    new_search_point.x = Math.ceil(search_point.x*(1-(vector_north/1)))
-  } else {
-    new_search_point.x = Math.ceil(search_point.x*(1+(vector_south/1)))
-  }
-
-  if(vector_west > vector_east){
-    new_search_point.y = Math.ceil(search_point.x*(1-(vector_west/1)))
-  } else {
-    new_search_point.y = Math.ceil(search_point.x*(1+(vector_east/1)))
-  }
-
-  room.visual.circle(new_search_point, { fill: 'pink', stroke: 'transparent' })
-  console.log(JSON.stringify(new_search_point))
-  return new_search_point
+function paintBuildArea(room, n,ne,e,se,s,sw,w,nw){
+  room.visual.circle(n, { fill: 'red', stroke: 'red' })
+  room.visual.circle(ne, { fill: 'red', stroke: 'green' })
+  room.visual.circle(e, { fill: 'green', stroke: 'green' })
+  room.visual.circle(se, { fill: 'green', stroke: 'orange' })
+  room.visual.circle(s, { fill: 'orange', stroke: 'orange' })
+  room.visual.circle(sw, { fill: 'orange', stroke: 'purple' })
+  room.visual.circle(w, { fill: 'purple', stroke: 'purple' })
+  room.visual.circle(nw, { fill: 'purple', stroke: 'red' })
 }
+/**
+ * Find an open space near the origin with the size of the raduis squared.
+ * @param {Object} room - The room to conduct the search in
+ * @param {Object} origin - The point at which the search starts
+ * @param {Number} radius - The radius of the square.
+ * @param {Number} max_distance - The maximum acceptable distance to search
+ */
+function findBuildArea(room, origin, radius, max_distance){
 
-function locateValidBuildPlot(room, search_point, search_size_factor){
-  
-  // Figure out how large the search area will be
-  const search_area_size = Math.pow((search_size_factor+1), 2)*4 
-
-  // The maximum number of times we will seach for a plot
-  const max_iterations = 10
-  var iteration_number = 0
+  let search_timeout = 20
+  let search_time = 0
+  let search_pos = origin
 
   do {
-    console.log(`Iteration Number: ${iteration_number}`)
 
-    // Generate a list of points within the area
-    var plot_candidates = inspectArea(room, search_point, search_size_factor)
+    let results = evaluateBuildArea(room, search_pos, radius)
 
-    // Examine each point to determine if the area is valid
-    var valid_plots = filterBuildObstructions(room, search_point, plot_candidates)
+    console.log(JSON.stringify(results))
 
-    console.log(`Valid Plots: ${valid_plots.length}`)
-    console.log(`Search Area: ${search_area_size}`)
+    const room_position_origin = new RoomPosition(origin.x, origin.y, room.name)
+    const room_position_search = new RoomPosition(search_pos.x, search_pos.y, room.name)
 
-    if(valid_plots.length < search_area_size){
-      // If the area isn't valid, figure out which direction to move the search
-      console.log("Calculate new search_point")
-      search_point = calculateNewSearchPoint(room, search_point, search_area_size, valid_plots)
+    if(PathFinder.search(room_position_origin, { pos: room_position_search, range: 1 }, { maxCost: max_distance }).incomplete){
+      console.log("Max distance exceeded!")
+    }
+
+    // Check to see if we've found the open space we were looking for
+    if(results.north === 7 && results.east === 7 && results.south === 7 && results.west === 7){
+      let left_corner = new RoomPosition(search_pos.x-radius, search_pos.y-radius, room.name)
+      room.visual.rect(left_corner, radius*2, radius*2, { fill: 'green' })
+      return search_pos
+    }
+
+    // Check to see if we should move North-East/West
+    else if(results.north === 7 && (results.east === 7 || results.west === 7)){
+      if(results.east === 7){
+        console.log("Heading North-East!")
+        search_pos = moveSearchPos(search_pos, "north_east", 1)
+      } else if(results.west === 7){
+        console.log("Heading North-West!")
+        search_pos = moveSearchPos(search_pos, "north_west", 1)
+      } else {
+        console.log("Something went wrong.....")
+      }
     }
     
-    // increment the search iteration counter
-    iteration_number++
-  } while (valid_plots.length < search_area_size && iteration_number <= max_iterations);
+    // Check to see if we should move South-East/West
+    else if(results.south === 7 && (results.east === 7 || results.west === 7)){
+      if(results.east === 7){
+        console.log("Heading South-East!")
+        search_pos = moveSearchPos(search_pos, "south_east", 1)
+      } else if(results.west === 7){
+        console.log("Heading South-West!")
+        search_pos = moveSearchPos(search_pos, "south_west", 1)
+      } else {
+        console.log("Something went wrong.....")
+      }
+    }
 
-
-  if(iteration_number <= max_iterations){
-    return search_point
-  } else {
-    return constants.BUILD_PLOT_SEARCH_TIMEOUT
+    // Find and move toward the largest value North/East/South/West
+    else {
+      let sorted_results = sortObject(results)
+      let new_direction = Object.keys(sorted_results).slice(-1)[0]
+      console.log(`Should be heading ${new_direction}`)
+      search_pos = moveSearchPos(search_pos, new_direction, 1)
+    }
+    
+    search_time++
+  } while(search_time<search_timeout)
+  
+  if(search_time>=search_timeout){
+    console.log(`Build area search timed out after ${search_time} attempts`)
   }
+
 }
 
-function getValidBuildArea(search_point, search_size_factor, min_search_size_factor){
-  do{
-    console.log(`SEARCH SIZE! ${search_size_factor}`)
-    // Try to find the best plot
-    valid_build_plot = locateValidBuildPlot(room, search_point, search_size_factor)
-
-    if(valid_build_plot === constants.BUILD_PLOT_SEARCH_TIMEOUT){
-      // decrement the search size factor since we couldn't find a valid spod
-      search_size_factor--
-    }
-    
-  } while(valid_build_plot === constants.BUILD_PLOT_SEARCH_TIMEOUT && search_size_factor > min_search_size_factor)
-  
-  if(valid_build_plot !== constants.BUILD_PLOT_SEARCH_TIMEOUT){
-    console.log(`FINAL POINT: ${valid_build_plot}`)
-    room.visual.rect(new RoomPosition(valid_build_plot.x - search_size_factor, valid_build_plot.y - search_size_factor, room.name), search_size_factor * 2, search_size_factor * 2, { fill: 'purple' })
-  } else {
-    console.log("Search timed out!")
+function moveSearchPos(pos, direction, units){
+  if(direction === "north"){
+    pos.y = pos.y-units
+    return pos
+  } else if(direction === "south"){
+    pos.y = pos.y+units
+    return pos
+  } else if(direction === "east"){
+    pos.x = pos.x+units
+    return pos
+  } else if(direction === "west"){
+    pos.x = pos.x-units
+    return pos
+  } else if(direction === "north_west"){
+    pos.y = pos.y-units
+    pos.x = pos.x-units
+    return pos
+  } else if(direction === "north_east"){
+    pos.y = pos.y-units
+    pos.x = pos.x+units
+    return pos
+  } else if(direction === "south_west"){
+    pos.y = pos.y+units
+    pos.x = pos.x-units
+    return pos
+  } else if(direction === "south_east"){
+    pos.y = pos.y+units
+    pos.x = pos.x+units
+    return pos
   }
+  console.log(`ERROR! Couldn't find direction: ${direction}`)
+  return pos //TODO: Maybe throw an error?
+}
+
+function sortObject(object){
+  let objectMap = new Map();
+
+  for(let i in object){
+    objectMap.set(i, object[i]);
+  }
+  
+  objectMap[Symbol.iterator] = function* () {
+      yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
+  }
+
+  let jsonObject = {};
+  for (let [key, value] of objectMap) {     // get data sorted
+    jsonObject[key] = value 
+  }
+  return jsonObject
 }
 
 function run(room) {
-  /*********************************************
-  * Test code for trying out different layouts *
-  **********************************************/
-
-  // Plot a walkable path between the two energy sources
-  // Return the midpoint. This is where the search starts
-  var midpoint = findSourceMidpoint(room)
-
-  if (Memory.debug) {
-    room.visual.rect(new RoomPosition(midpoint.x - search_size_factor, midpoint.y - search_size_factor, room.name), search_size_factor * 2, search_size_factor * 2, { fill: 'green' })
+  if(Game.flags.Flag1){
+    console.log("--- START ---")
+    findBuildArea(room, Game.flags.Flag1.pos, 1, 16)
+    console.log("--- END ---")
   }
-
-  var valid_spawn_point = getValidBuildArea(midpoint, 4, 2)
 }
 
 module.exports = {
@@ -253,11 +293,11 @@ module.exports = {
     setup(room)
   },
   Run(room) {
-    try {
-      run(room)
-    }
-    catch (err) {
-      console.log(`Failed to execute layout simulation\n${err} - ${err.stack}`)
-    }
+    run(room)
+    /*try {
+      
+    } catch (err) {
+      console.log(`The room controller has failed with error:\n${err} - ${err.stack}`)
+    }*/
   }
 }
