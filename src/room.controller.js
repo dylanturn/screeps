@@ -1,4 +1,4 @@
-const { LogMsg } = require('./util')
+const { LogMsg } = require('./logger')
 const { LOG_LEVEL, HEADING, Heading } = require('./constants')
 
 /**
@@ -45,11 +45,11 @@ function findBuildAreaPath(room, origin, target, range, draw_search = false) {
   let goal = { pos: room_position_end, range: 0 }
   let results = PathFinder.search(room_position_start, goal, { maxCost: range })
 
-  if (draw_search) {
+  //if (draw_search) {
     for (var i = 1; i <= results.path.length; i++) {
       room.visual.line(results.path[i - 1], results.path[i], { color: 'white', lineStyle: 'dashed' })
     }
-  }
+  //}
 
   return !results.incomplete
 }
@@ -348,7 +348,7 @@ function sortObject(object) {
  */
 function run(room) {
   if (Game.flags.Flag1) {
-    findBuildArea(room, Game.flags.Flag1.pos, 1, 16, false)
+    findBuildArea(room, Game.flags.Flag1.pos, 2, 16, true, true)
   }
 }
 

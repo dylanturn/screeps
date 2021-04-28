@@ -3,7 +3,7 @@
 * structures to create construction sites for.  *
 *************************************************/
 
-const { LogMsg } = require('./util')
+const { LogMsg } = require('./logger')
 const { LOG_LEVEL } = require('./constants')
 const construction_road = require('./construction.road');
 const construction_extension = require('./construction.extension');

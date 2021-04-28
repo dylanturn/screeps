@@ -2,7 +2,7 @@
 * Responsible for helping the creeps decide which tasks to work *
 *****************************************************************/
 
-const { LogMsg } = require('./util')
+const { LogMsg } = require('./logger')
 const { CREEP_ROLES, LOG_LEVEL } = require('./constants')
 const creep_role_harvester = require('./creep.role.harvester')
 const creep_role_worker = require('./creep.role.worker')

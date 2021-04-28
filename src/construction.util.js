@@ -1,4 +1,5 @@
-const { LogMsg, GetClosestByObject } = require('./util')
+const { GetClosestByObject } = require('./util')
+const { LogMsg } = require('./logger')
 const { LOG_LEVEL } = require('./constants')
 
 function findClosestRoad(room, object) {
