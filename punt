@@ -1,0 +1,3 @@
+cd ./src/
+python3 ../upload_to_private.py 
+cd -
