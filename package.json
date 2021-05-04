@@ -14,6 +14,7 @@
     "@types/screeps": "^3.2.2",
     "@types/sinon": "^5.0.5",
     "@types/sinon-chai": "^3.2.0",
+    "collections": "5.1.12",
     "chai": "^4.2.0",
     "lodash": "^3.10.1",
     "mocha": "^5.2.0",

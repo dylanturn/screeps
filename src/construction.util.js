@@ -1,8 +1,18 @@
-const { GetClosestByObject } = require('./util')
+const { GetClosestByPos } = require('./util')
 const { LogMsg } = require('./logger')
 const { LOG_LEVEL } = require('./constants')
 
 function findClosestRoad(room, object) {
+  let planned_roads = []
+  const components = Memory['complex_components']
+  for(let i in components){
+    if(components[i] === "road"){
+      let coord = i.split(":")
+      planned_roads.push(
+        new RoomPosition(Number(coord[0]), Number(coord[1]), room.name)
+      )
+    }
+  }
 
   const road_construction_sites = room.find(FIND_CONSTRUCTION_SITES,
     { filter: { structureType: STRUCTURE_ROAD } });
@@ -10,8 +20,7 @@ function findClosestRoad(room, object) {
   const roads = Game.rooms[room.name].find(FIND_STRUCTURES, {
     filter: { structureType: STRUCTURE_ROAD }
   });
-
-  return GetClosestByObject(object.pos, roads.concat(road_construction_sites))
+  return GetClosestByPos(object.pos, roads.concat(road_construction_sites.concat(planned_roads)))
 }
 
 
@@ -21,7 +30,7 @@ function validateBuildPos(room, pos) {
   var position_content = room.lookAt(pos.x, pos.y)
   // Check to make sure this is a valid position
   if (position_content[0].type === "terrain") {
-    if (position_content[0].terrain === "plain") {
+    if (position_content[0].terrain === "plain" || position_content[0].terrain === "swamp") {
       return true
     }
   }

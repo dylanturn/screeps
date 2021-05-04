@@ -92,6 +92,16 @@ function getClosestByObject(posA, objects) {
   return null
 }
 
+/**
+   * Returns the sum of given Number array.
+   * (Used to make code a little prettier)
+   * @param {Number[]} array 
+   * @returns Number
+   */
+function sumArray(array){
+  return array.reduce(function(a, b){return a + b;}, 0)
+}
+
 module.exports = {
 
   GlobalSetup() {
@@ -111,6 +121,54 @@ module.exports = {
   // Returns the closest object to the given position(A)
   GetClosestByObject(posA, objects) {
     return getClosestByObject(posA, objects)
+  },
+
+  /**
+   * Returns the sum of given Number array.
+   * (Used to make code a little prettier)
+   * @param {Number[]} array 
+   * @returns Number
+   */
+  SumArray(array){
+    return sumArray(array)
+  },
+
+  /**
+   * Finds and returns all the flags whos memory contains the given attibute as keys in the given room
+   * @param {Room} room 
+   * @param {String[]} attributes
+   * @returns {Flag[]} flags
+   */
+  FindFlagsWithAttribute(room, attributes){
+    return findFlagsWithAttribute(room, attributes)
+  },
+
+  /**
+   * Returns the sum of the values in the given object
+   * This assumes the values are all Numbers
+   * (Also used to make code a little prettier)
+   * @param {Object} object 
+   * @returns Number
+   */
+    SumObject(object){
+    return sumArray(Object.values(object))
   }
 };
 
+/**
+   * Finds and returns all the flags whos memory contains the given attibute as keys in the given room
+   * @param {Room} room 
+   * @param {String[]} attributes
+   * @returns {Flag[]} flags
+   */
+function findFlagsWithAttribute(room, attributes){
+  console.log("FINDING FLAGS")
+  let found_flags = []
+  const flags = room.find(FIND_FLAGS)
+  for(let i in flags){
+    if(attributes.some(i => Object.keys(flags[i].memory).includes(i))){
+      found_flags.push(flags[i])
+    }
+  }
+  return found_flags
+}

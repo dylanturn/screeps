@@ -10,51 +10,20 @@ function logMsg(level, message, component = "unknown") {
 
   const configured_log_level = Memory["log_level"]
 
-  const trace_levels = [
-    LOG_LEVEL.TRACE
-  ]
-
-  const debug_levels = [
-    LOG_LEVEL.DEBUG
-  ].concat(trace_levels)
-
-  const info_levels = [
-    LOG_LEVEL.INFO
-  ].concat(debug_levels)
-
-  const error_levels = [
-    LOG_LEVEL.ERROR
-  ].concat(info_levels)
-
   /**
    * A closure to standardize the console message output
    * @param {LogLevel} level 
    * @param {String} component 
    * @param {String} message 
    */
-  const outputMsg = (level, component, message) => {
-    console.log(`${level}\t-\t${component}\n${message}`)
-  };
-
-  /// If this is a TRACE message we will output it here
-  if (trace_levels.includes(configured_log_level) && trace_levels.includes(level)) {
-    outputMsg(level, component, message)
+  
+  // Make sure the log level is in scope
+  if(level <= configured_log_level){
+    return
   }
 
-  // If this is a DEBUG message we will output it here
-  else if (debug_levels.includes(configured_log_level) && debug_levels.includes(level)) {
-    outputMsg(level, component, message)
-  }
-
-  // If this is an INFO message we will output it here
-  else if (info_levels.includes(configured_log_level) && info_levels.includes(level)) {
-    outputMsg(level, component, message)
-  }
-
-  // If this is an ERROR message we will output it here
-  else if (error_levels.includes(configured_log_level) && error_levels.includes(level)) {
-    outputMsg(level, component, message)
-  }
+  // If the message is of the right level, then print.
+  console.log(`${level} - ${component} - ${message}`)
 }
 
 /**

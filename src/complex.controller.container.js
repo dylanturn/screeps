@@ -121,8 +121,6 @@ function constructContainers(room) {
                       flag.memory["type"] == "controller"
   })
   
-  console.log(flags.length)
-  
   for (let i in flags) {
     let flag = flags[i]
 
@@ -152,4 +150,3 @@ function constructContainers(room) {
   }
   return false
 }
-

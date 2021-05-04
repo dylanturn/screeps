@@ -71,8 +71,10 @@ function spawnCreep(spawn, creep_spec) {
 }
 
 function setup(room) {
-  room.memory.harvesters = []
-  room.memory.builders = []
+  room.memory["harvesters"] = []
+  room.memory["builders"] = []
+  room.memory["workers"] = []
+  room.memory["transporters"] = []
 }
 
 function run(room) {
@@ -85,6 +87,9 @@ function run(room) {
   /******************
   * Screep Spawning *
   ******************/
+ if(room.find(FIND_MY_SPAWNS).length <= 0){
+   return
+ }
   var spawn = room.find(FIND_MY_SPAWNS)[0]
 
   // Make sure that at the very least we have harvesters binging in the energy

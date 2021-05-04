@@ -1,6 +1,7 @@
 /**
  * @typedef {String} BuildPlotSearchTimeout
  * @typedef {String} BuildPlotSearchOutOfBounds
+ * @typedef {String} BuildPlotObstructed
  * @typedef {String} DepositEnergy
  * @typedef {String} WithdrawEnergy
  * @typedef {String} CreepRoles
@@ -14,15 +15,21 @@ module.exports = Object.freeze({
    * Enum for BUILD_PLOT_SEARCH_TIMEOUT values.
    * @enum {BuildPlotSearchTimeout}
   */
-  BUILD_PLOT_SEARCH_TIMEOUT: "😞",
+  BUILD_PLOT_SEARCH_TIMEOUT: "BUILD_PLOT_SEARCH_TIMEOUT",
 
 
   /**
    * Enum for BUILD_PLOT_SEARCH_OUT_OF_BOUNDS values.
    * @enum {BuildPlotSearchOutOfBounds}
   */
-  BUILD_PLOT_SEARCH_OUT_OF_BOUNDS: "📦",
+  BUILD_PLOT_SEARCH_OUT_OF_BOUNDS: "BUILD_PLOT_SEARCH_OUT_OF_BOUNDS",
 
+
+  /**
+   * Enum for BUILD_PLOT_OBSTRUCTED values.
+   * @enum {BuildPlotObstructed}
+  */
+  BUILD_PLOT_OBSTRUCTED: "BUILD_PLOT_OBSTRUCTED",
 
   /**
    * Enum for DEPOSIT_ENERGY values.
@@ -69,9 +76,10 @@ module.exports = Object.freeze({
    * @enum {LogLevel}
   */
   LOG_LEVEL: {
-    TRACE: "trace",
-    DEBUG: "debug",
-    INFO: "info",
-    ERROR: "error"
+    TRACE: "0",
+    DEBUG: "1",
+    INFO: "2",
+    ERROR: "3"
   }
+
 });
