@@ -6,8 +6,6 @@
 
 const { LogMsg } = require('./logger')
 const { LOG_LEVEL } = require('./constants')
-const { ConstructContainers } = require('./construction.container')
-const { ConstructRoads } = require('./construction.road')
 const { GetRoomComponents } = require('./complex.util')
 
 function setup(room) {
@@ -16,14 +14,6 @@ function setup(room) {
       room.memory["construction"] = []
     }
   }
-
-  /*const spawns = room.find(FIND_MY_SPAWNS)
-  for(let i in spawns){
-    let spawn = spawns[i]
-    ConstructRoads(room, spawn)
-  }
-  ConstructContainers(room)*/
-
 }
 
 
@@ -98,16 +88,21 @@ function constructionBlocked(room, position) {
 function constructSites(room){
   console.log("----- start -----")
   for (const [key, value] of Object.entries(GetRoomComponents(room))) {
+    
     if (!value){continue}
+
     let raw_position = key.split(':')
     let position = new RoomPosition(Number(raw_position[0]), Number(raw_position[1]), room.name)
     console.log(value)
     if (!constructionBlocked(room, position)) {
+
+      
       if (value === "container") {
         if(constructContainer(room, position) == OK){
           console.log("----- end-container -----")
           return
-        } else if (value === "extension") {
+        }
+      } else if (value === "extension") {
         if(constructExtension(room, position) == OK){
           console.log("----- end-extension -----")
           return
@@ -124,17 +119,21 @@ function constructSites(room){
         }
       }
     } else {
-      console.log("Construction blocked")
+      console.log(`Construction blocked at position: ${JSON.stringify(position)}`)
     }
   }
   console.log("----- end -----")
-  }
 }
+
+
+
 function run(room) {
-  if(room.find(FIND_MY_CONSTRUCTION_SITES).length < 100){
-    constructSites(room)
+  if(Memory["complex_deployment_phase"] == 4){
+    if(room.find(FIND_MY_CONSTRUCTION_SITES).length < 100){
+      constructSites(room)
+    }
+    updateConstructionSiteList(room)
   }
-  updateConstructionSiteList(room)
 }
 
 
