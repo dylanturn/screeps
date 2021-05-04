@@ -38,6 +38,15 @@ module.exports = {
   },
 
   /**
+   * 
+   * @param {Room} room 
+   * @returns 
+   */
+  GetRoomComponents(room){
+    return getRoomComponents(room)
+  },
+
+  /**
    * Gets the number of structures in the given complex template and adds then to planned_structure_counts
    * @param {Room} room  
    */
@@ -239,6 +248,16 @@ function createTemplateConnectorFlags(origin, template){
 }
 
 /**
+ * 
+ * @param {Room} room 
+ * @returns
+ */
+function getRoomComponents(room){
+  return Memory["complex_components"]
+}
+
+
+/**
  * Gets the number of structures in the given complex template and adds then to planned_structure_counts
  * @param {Room} room 
  */
@@ -255,7 +274,6 @@ function updateStructureCounts(room){
     let component = i.split(':')
     if(component[2] !== "null"){
       room.memory["planned_structure_counts"][component[2]]++
-      console.log(`${component[2]} - ${room.memory["planned_structure_counts"][component[2]]}`)
     }
   }
 }

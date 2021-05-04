@@ -159,7 +159,7 @@ const templates = {
   spawn_template: [
     cmp(x,[-3,-3],false), cmp(x,[-2, -3],false), cmp(r,[-1, -3],false), cmp(r,[ 0 , -3], true), cmp(r,[ 1, -3],false), cmp(x,[ 2, -3],false), cmp(x,[ 3, -3],false),
     cmp(x,[-3,-2],false), cmp(r,[-2, -2], true), cmp(e,[-1, -2],false), cmp(r,[ 0 , -2],false), cmp(e,[ 1, -2],false), cmp(r,[ 2, -2], true), cmp(x,[ 3, -2],false),
-    cmp(r,[-3,-1],false), cmp(e,[-2, -1],false), cmp(s,[-1, -1],false), cmp(r,[ 0 , -1],false), cmp(e,[ 1, -1],false), cmp(e,[ 2, -1],false), cmp(r,[ 3, -1],false),
+    cmp(r,[-3,-1],false), cmp(e,[-2, -1],false), cmp(s,[-1, -1],false), cmp(r,[ 0 , -1],false), cmp(c,[ 1, -1],false), cmp(e,[ 2, -1],false), cmp(r,[ 3, -1],false),
     cmp(r,[-3, 0], true), cmp(r,[-2,  0],false), cmp(r,[-1,  0],false), cmp(z,[ 0 ,  0],false), cmp(r,[ 1,  0],false), cmp(r,[ 2,  0],false), cmp(r,[ 3,  0], true),
     cmp(r,[-3, 1],false), cmp(e,[-2,  1],false), cmp(t,[-1,  1],false), cmp(r,[ 0 ,  1],false), cmp(c,[ 1,  1],false), cmp(e,[ 2,  1],false), cmp(r,[ 3,  1],false),
     cmp(x,[-3, 2],false), cmp(r,[-2,  2], true), cmp(e,[-1,  2],false), cmp(r,[ 0 ,  2],false), cmp(e,[ 1,  2],false), cmp(r,[ 2,  2], true), cmp(x,[ 3,  2],false),
@@ -167,7 +167,7 @@ const templates = {
   ],
   spawn_template_alt: [
     { "type": e, "pos": [-2, -2], "conn": false }, { "type": e, "pos": [-1, -2], "conn": false }, { "type": r, "pos": [0, -2], "conn": true  }, { "type": e, "pos": [1, -2], "conn": false }, { "type": e, "pos": [2, -2], "conn": false },
-    { "type": e, "pos": [-2, -1], "conn": false }, { "type": s, "pos": [-1, -1], "conn": false }, { "type": r, "pos": [0, -1], "conn": false }, { "type": e, "pos": [1, -1], "conn": false }, { "type": e, "pos": [2, -1], "conn": false },
+    { "type": e, "pos": [-2, -1], "conn": false }, { "type": s, "pos": [-1, -1], "conn": false }, { "type": r, "pos": [0, -1], "conn": false }, { "type": c, "pos": [1, -1], "conn": false }, { "type": e, "pos": [2, -1], "conn": false },
     { "type": r, "pos": [-2,  0], "conn": true  }, { "type": r, "pos": [-1,  0], "conn": false }, { "type": z, "pos": [0,  0], "conn": false }, { "type": r, "pos": [1,  0], "conn": false }, { "type": r, "pos": [2,  0], "conn": true  },
     { "type": e, "pos": [-2,  1], "conn": false }, { "type": t, "pos": [-1,  1], "conn": false }, { "type": r, "pos": [0,  1], "conn": false }, { "type": c, "pos": [1,  1], "conn": false }, { "type": e, "pos": [2,  1], "conn": false },
     { "type": e, "pos": [-2,  2], "conn": false }, { "type": e, "pos": [-1,  2], "conn": false }, { "type": r, "pos": [0,  2], "conn": true  }, { "type": e, "pos": [1,  2], "conn": false }, { "type": e, "pos": [2,  2], "conn": false }
@@ -178,7 +178,7 @@ const templates = {
   spawn_extension_template: [
     cmp(x,[-3,-3],false), cmp(x,[-2, -3],false), cmp(r,[-1, -3],false), cmp(r,[ 0 , -3], true), cmp(r,[ 1, -3],false), cmp(x,[ 2, -3],false), cmp(x,[ 3, -3],false),
     cmp(x,[-3,-2],false), cmp(r,[-2, -2], true), cmp(e,[-1, -2],false), cmp(r,[ 0 , -2],false), cmp(e,[ 1, -2],false), cmp(r,[ 2, -2], true), cmp(x,[ 3, -2],false),
-    cmp(r,[-3,-1],false), cmp(e,[-2, -1],false), cmp(s,[-1, -1],false), cmp(r,[ 0 , -1],false), cmp(e,[ 1, -1],false), cmp(e,[ 2, -1],false), cmp(r,[ 3, -1],false),
+    cmp(r,[-3,-1],false), cmp(e,[-2, -1],false), cmp(s,[-1, -1],false), cmp(r,[ 0 , -1],false), cmp(c,[ 1, -1],false), cmp(e,[ 2, -1],false), cmp(r,[ 3, -1],false),
     cmp(r,[-3, 0], true), cmp(r,[-2,  0],false), cmp(r,[-1,  0],false), cmp(x,[ 0 ,  0],false), cmp(r,[ 1,  0],false), cmp(r,[ 2,  0],false), cmp(r,[ 3,  0], true),
     cmp(r,[-3, 1],false), cmp(e,[-2,  1],false), cmp(t,[-1,  1],false), cmp(r,[ 0 ,  1],false), cmp(c,[ 1,  1],false), cmp(e,[ 2,  1],false), cmp(r,[ 3,  1],false),
     cmp(x,[-3, 2],false), cmp(r,[-2,  2], true), cmp(e,[-1,  2],false), cmp(r,[ 0 ,  2],false), cmp(e,[ 1,  2],false), cmp(r,[ 2,  2], true), cmp(x,[ 3,  2],false),
@@ -186,7 +186,7 @@ const templates = {
   ],
   spawn_extension_template_alt: [
     { "type": e, "pos": [-2, -2], "conn": false }, { "type": e, "pos": [-1, -2], "conn": false }, { "type": r, "pos": [0, -2], "conn": true  }, { "type": e, "pos": [1, -2], "conn": false }, { "type": e, "pos": [2, -2], "conn": false },
-    { "type": e, "pos": [-2, -1], "conn": false }, { "type": s, "pos": [-1, -1], "conn": false }, { "type": r, "pos": [0, -1], "conn": false }, { "type": e, "pos": [1, -1], "conn": false }, { "type": e, "pos": [2, -1], "conn": false },
+    { "type": e, "pos": [-2, -1], "conn": false }, { "type": s, "pos": [-1, -1], "conn": false }, { "type": r, "pos": [0, -1], "conn": false }, { "type": c, "pos": [1, -1], "conn": false }, { "type": e, "pos": [2, -1], "conn": false },
     { "type": r, "pos": [-2,  0], "conn": true  }, { "type": r, "pos": [-1,  0], "conn": false }, { "type": x, "pos": [0,  0], "conn": false }, { "type": r, "pos": [1,  0], "conn": false }, { "type": r, "pos": [2,  0], "conn": true  },
     { "type": e, "pos": [-2,  1], "conn": false }, { "type": t, "pos": [-1,  1], "conn": false }, { "type": r, "pos": [0,  1], "conn": false }, { "type": c, "pos": [1,  1], "conn": false }, { "type": e, "pos": [2,  1], "conn": false },
     { "type": e, "pos": [-2,  2], "conn": false }, { "type": e, "pos": [-1,  2], "conn": false }, { "type": r, "pos": [0,  2], "conn": true  }, { "type": e, "pos": [1,  2], "conn": false }, { "type": e, "pos": [2,  2], "conn": false }
@@ -210,14 +210,14 @@ const templates = {
   meduim_extension_template: [
     cmp(x,[-2, -2],false), cmp(x,[ -1, -2],false), cmp(r,[ 0,-2],false), cmp(x,[ 1,-2],false), cmp(x,[ 2,-2],false),
     cmp(x,[-2, -1],false), cmp(r,[ -1, -1],false), cmp(e,[ 0,-1],false), cmp(r,[ 1,-1],false), cmp(x,[ 2,-1],false),
-    cmp(r,[-2,  0],false), cmp(e,[ -1,  0],false), cmp(e,[ 0, 0],false), cmp(e,[ 1, 0],false), cmp(r,[ 2, 0],false),
+    cmp(r,[-2,  0],false), cmp(e,[ -1,  0],false), cmp(t,[ 0, 0],false), cmp(e,[ 1, 0],false), cmp(r,[ 2, 0],false),
     cmp(x,[-2,  1],false), cmp(r,[ -1,  1],false), cmp(e,[ 0, 1],false), cmp(r,[ 1, 1],false), cmp(x,[ 2, 1],false),
     cmp(x,[-2,  2],false), cmp(x,[ -1,  2],false), cmp(r,[ 0, 2],false), cmp(x,[ 1, 2],false), cmp(x,[ 2, 2],false)
   ],
   meduim_extension_template_alt: [
     { "type": e, "pos": [-2, -2], "conn": false }, { "type": e, "pos": [-1, -2], "conn": false }, { "type": r, "pos": [0, -2], "conn": true  }, { "type": e, "pos": [1, -2], "conn": false }, { "type": e, "pos": [2, -2], "conn": false },
     { "type": e, "pos": [-2, -1], "conn": false }, { "type": e, "pos": [-1, -1], "conn": false }, { "type": r, "pos": [0, -1], "conn": false }, { "type": e, "pos": [1, -1], "conn": false }, { "type": e, "pos": [2, -1], "conn": false },
-    { "type": r, "pos": [-2,  0], "conn": true  }, { "type": r, "pos": [-1,  0], "conn": false }, { "type": r, "pos": [0,  0], "conn": false }, { "type": r, "pos": [1,  0], "conn": false }, { "type": r, "pos": [2,  0], "conn": true  },
+    { "type": r, "pos": [-2,  0], "conn": true  }, { "type": r, "pos": [-1,  0], "conn": false }, { "type": t, "pos": [0,  0], "conn": false }, { "type": r, "pos": [1,  0], "conn": false }, { "type": r, "pos": [2,  0], "conn": true  },
     { "type": e, "pos": [-2,  1], "conn": false }, { "type": e, "pos": [-1,  1], "conn": false }, { "type": r, "pos": [0,  1], "conn": false }, { "type": e, "pos": [1,  1], "conn": false }, { "type": e, "pos": [2,  1], "conn": false },
     { "type": e, "pos": [-2,  2], "conn": false }, { "type": e, "pos": [-1,  2], "conn": false }, { "type": r, "pos": [0,  2], "conn": true  }, { "type": e, "pos": [1,  2], "conn": false }, { "type": e, "pos": [2,  2], "conn": false }
   ],
@@ -228,7 +228,7 @@ const templates = {
     cmp(x,[-3,-3],false), cmp(x,[-2, -3],false), cmp(r,[-1, -3],false), cmp(r,[ 0 , -3], true), cmp(r,[ 1, -3],false), cmp(x,[ 2, -3],false), cmp(x,[ 3, -3],false),
     cmp(x,[-3,-2],false), cmp(r,[-2, -2], true), cmp(e,[-1, -2],false), cmp(r,[ 0 , -2],false), cmp(e,[ 1, -2],false), cmp(r,[ 2, -2], true), cmp(x,[ 3, -2],false),
     cmp(r,[-3,-1],false), cmp(e,[-2, -1],false), cmp(s,[-1, -1],false), cmp(r,[ 0 , -1],false), cmp(e,[ 1, -1],false), cmp(e,[ 2, -1],false), cmp(r,[ 3, -1],false),
-    cmp(r,[-3, 0], true), cmp(r,[-2,  0],false), cmp(r,[-1,  0],false), cmp(r,[ 0 ,  0],false), cmp(r,[ 1,  0],false), cmp(r,[ 2,  0],false), cmp(r,[ 3,  0], true),
+    cmp(r,[-3, 0], true), cmp(r,[-2,  0],false), cmp(r,[-1,  0],false), cmp(t,[ 0 ,  0],false), cmp(r,[ 1,  0],false), cmp(r,[ 2,  0],false), cmp(r,[ 3,  0], true),
     cmp(r,[-3, 1],false), cmp(e,[-2,  1],false), cmp(t,[-1,  1],false), cmp(r,[ 0 ,  1],false), cmp(s,[ 1,  1],false), cmp(e,[ 2,  1],false), cmp(r,[ 3,  1],false),
     cmp(x,[-3, 2],false), cmp(r,[-2,  2], true), cmp(e,[-1,  2],false), cmp(r,[ 0 ,  2],false), cmp(e,[ 1,  2],false), cmp(r,[ 2,  2], true), cmp(x,[ 3,  2],false),
     cmp(x,[-3, 3],false), cmp(x,[-2,  3],false), cmp(r,[-1,  3],false), cmp(r,[ 0 ,  3], true), cmp(r,[ 1,  3],false), cmp(x,[ 2,  3],false), cmp(x,[ 3,  3],false),
@@ -237,7 +237,7 @@ const templates = {
     { "type": x, "pos": [-3, -3], "conn": false }, { "type": x, "pos": [-2, -3], "conn": false }, { "type": e, "pos": [-1, -3], "conn": false }, { "type": r, "pos": [0, -3], "conn": true  }, { "type": e, "pos": [1, -3], "conn": false }, { "type": x, "pos": [2, -3], "conn": false }, { "type": x, "pos": [3, -3], "conn": false },
     { "type": x, "pos": [-3, -2], "conn": false }, { "type": e, "pos": [-2, -2], "conn": false }, { "type": e, "pos": [-1, -2], "conn": false }, { "type": r, "pos": [0, -2], "conn": false }, { "type": e, "pos": [1, -2], "conn": false }, { "type": e, "pos": [2, -2], "conn": false }, { "type": x, "pos": [3, -2], "conn": false },
     { "type": e, "pos": [-3, -1], "conn": false }, { "type": e, "pos": [-2, -1], "conn": false }, { "type": e, "pos": [-1, -1], "conn": false }, { "type": r, "pos": [0, -1], "conn": false }, { "type": e, "pos": [1, -1], "conn": false }, { "type": e, "pos": [2, -1], "conn": false }, { "type": e, "pos": [3, -1], "conn": false },
-    { "type": r, "pos": [-3,  0], "conn": true  }, { "type": r, "pos": [-2,  0], "conn": false }, { "type": r, "pos": [-1,  0], "conn": false }, { "type": r, "pos": [0,  0], "conn": false }, { "type": r, "pos": [1,  0], "conn": false }, { "type": r, "pos": [2,  0], "conn": false }, { "type": r, "pos": [3,  0], "conn": true  },
+    { "type": r, "pos": [-3,  0], "conn": true  }, { "type": r, "pos": [-2,  0], "conn": false }, { "type": r, "pos": [-1,  0], "conn": false }, { "type": t, "pos": [0,  0], "conn": false }, { "type": r, "pos": [1,  0], "conn": false }, { "type": r, "pos": [2,  0], "conn": false }, { "type": r, "pos": [3,  0], "conn": true  },
     { "type": e, "pos": [-3,  1], "conn": false }, { "type": e, "pos": [-2,  1], "conn": false }, { "type": e, "pos": [-1,  1], "conn": false }, { "type": r, "pos": [0,  1], "conn": false }, { "type": e, "pos": [1,  1], "conn": false }, { "type": e, "pos": [2,  1], "conn": false }, { "type": e, "pos": [3,  1], "conn": false },
     { "type": x, "pos": [-3,  2], "conn": false }, { "type": e, "pos": [-2,  2], "conn": false }, { "type": e, "pos": [-1,  2], "conn": false }, { "type": r, "pos": [0,  2], "conn": false }, { "type": e, "pos": [1,  2], "conn": false }, { "type": e, "pos": [2,  2], "conn": false }, { "type": x, "pos": [3,  2], "conn": false },
     { "type": x, "pos": [-3,  3], "conn": false }, { "type": x, "pos": [-2,  3], "conn": false }, { "type": e, "pos": [-1,  3], "conn": false }, { "type": r, "pos": [0,  3], "conn": true  }, { "type": e, "pos": [1,  3], "conn": false }, { "type": x, "pos": [2,  3], "conn": false }, { "type": x, "pos": [3,  3], "conn": false }
